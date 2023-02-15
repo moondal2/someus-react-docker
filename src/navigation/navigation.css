@@ -1,0 +1,50 @@
+.navi {
+    border: 1px solid black;
+    width: 100%;
+    background: white;
+    padding-left: 50px;
+    box-sizing: border-box;
+    height: 50px;
+}
+
+.myPage {
+    float: right;
+    margin-right: 50px;
+    line-height: 50px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.myPage::after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.navi_icon {
+    margin-top:10px;
+    width: 25px;
+    height: 30px;
+}
+
+p {
+    float: right;
+    width: 200px;
+    margin-left: 200px;
+}
+
+p::after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.howTo {
+    float: left;
+}
+
+.howTo::after {
+    display: block;
+    clear: both;
+    content: "";
+}
