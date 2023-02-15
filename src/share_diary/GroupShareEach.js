@@ -1,4 +1,4 @@
-const EachDiary = ({ list }) => {
+const GroupShareEach = ({ list }) => {
     return (
         <>
         <div style={ {float: 'left', width: "calc('300px' / 4)", padding: 5} }>
@@ -9,4 +9,4 @@ const EachDiary = ({ list }) => {
     );
 }
 
-export default EachDiary;
+export default GroupShareEach;

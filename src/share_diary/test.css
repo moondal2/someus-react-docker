@@ -1,0 +1,14 @@
+.btn {
+    margin-bottom: 10px;
+    width: 50px;
+    color: white;
+    background-color: pink;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+    .btn.active {
+        background-color: lightblue;
+    }

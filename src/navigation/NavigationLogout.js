@@ -1,4 +1,4 @@
-import './navigation.css'
+
 
 const NavigationLogout = (props) => {
 
@@ -19,6 +19,7 @@ const NavigationLogout = (props) => {
         <form >
             <input type="image" 
                     className= 'navi_icon'
+                    style={ { width: '30px', height: '30px'}}
                     src="https://cdn-icons-png.flaticon.com/512/25/25694.png" 
                     onClick={ handlerClickHome }></input>
             <input type="button" 

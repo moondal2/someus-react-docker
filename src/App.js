@@ -1,14 +1,15 @@
 import logo from './logo.svg';
-import './App.css';
+
 import NavigationDiary from './navigation/NavigationDiary';
 import NavigationLogin from './navigation/NavigationLogin';
 import NavigationLogout from './navigation/NavigationLogout';
-import ShareGroupList from './share_diary/ShareGroupList';
+import GroupList from './share_diary/GroupList';
 import Calendar from './Calendar';
-import ShareGroupDiaryList from './share_diary/ShareGroupDiaryList';
-import ShareDiaryDetail from './share_diary/ShareDiaryDetail';
+import GroupShareList from './share_diary/GroupShareList';
+import ShareDiaryDetail from './share_diary/GroupShareDetail';
+import GroupDiaryWrite from './share_diary/GroupDiaryWrite';
 import { Link, Route } from 'react-router-dom';
-import './navigation/navigation.css'
+
 
 
 function App() {
@@ -19,14 +20,23 @@ function App() {
     <>
     <ul>
       <li><Link to='/navi'>네비</Link></li>
-      
+
     </ul> 
     
     
-    <Route path='/navi' 
-          component={ (props) => <NavigationLogin {...props} 
-          name={ name }/>} exact={ true } />
-    <Route path='/sharelist' component={ShareDiaryDetail} />
+    {/* <Route path='/navi' 
+          component={ 
+            (props) => <NavigationLogin {...props} name={ name }/>
+            } exact={ true } />
+
+            <hr />
+            <NavigationLogout />
+            <hr />
+            <NavigationDiary /> */}
+    {/* <Route path='/someus/share/grouplist' component={GroupList} exact={true}/> */}
+    {/* <Route path='/someus/share/:diaryId' component={ ShareDiaryDetail } exact={true}/> */}
+    {/* <Route path='/someus/share/write' component={ GroupDiaryWrite } exact={true}/> */}
+    <Route path='/someus/share/groupsharelist' component={ GroupShareList } exact={true}/>
     </>
   );
 }

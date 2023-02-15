@@ -1,4 +1,4 @@
-import './navigation.css'
+
 
 const NavigationDiary = (props) => {
 
@@ -16,6 +16,7 @@ const NavigationDiary = (props) => {
             <div className= 'navi'>
                 <input type="image" 
                         className= 'navi_icon'
+                        style={ { width: '30px', height: '30px'}}
                         src="https://cdn-icons-png.flaticon.com/512/25/25694.png" 
                         onClick={ handlerClickHome }></input>
                 <input type="button"

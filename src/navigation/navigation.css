@@ -27,11 +27,11 @@
     height: 30px;
 }
 
-p {
-    float: right;
+/* p { */
+    /* float: right;
     width: 200px;
     margin-left: 200px;
-}
+} */
 
 p::after {
     display: block;
