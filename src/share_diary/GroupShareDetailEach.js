@@ -2,8 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { withRouter } from 'react-router-dom';
 
-
-
 const GroupShareDetailEach = ({ match, history }) => {
     
     
@@ -15,7 +13,8 @@ const GroupShareDetailEach = ({ match, history }) => {
     const { diaryId } = JSON.stringify(match.params);
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/someus/share/${diaryId}`)
+        axios.get(`http://localhost:8080/api/someus/share/${diaryId}`,
+                    { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
             .then(response =>{
                 console.log(response);
                 setDiary(response.data);

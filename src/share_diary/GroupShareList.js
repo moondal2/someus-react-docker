@@ -1,16 +1,17 @@
-import Calendar from "../Calendar";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import NavigationLogin from "../navigation/NavigationLogin";
 import GroupShareEach from "./GroupShareEach";
 
+
+
 const GroupShareList = () => {
-
-    // const list = [ { contents: '어쩌구', date:'20230214'}, 
-    //                 { contents: '저쩌구', date:'20230211'},
-    //                 { contents: '몰랑', date: '20220222' } ];
-
-    const [ list, setList ] = useState([]);
-
+   
+    const [ list, setList ] = useState([]); 
+    
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/someus/share/groupsharelist`)
+        axios.get(`http://localhost:8080/api/someus/share/groupsharelist`,
+                { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
             .then((response) => {
                 console.log(response);
                 setList(response.data);
@@ -18,16 +19,15 @@ const GroupShareList = () => {
             .catch((error) => {
                 console.log(error);
             })
-    })
+    });
 
     return (
         <>
-        <div style={ { borderRight: '1px solid gray', width: '350px', float: 'left'} }>
-            <Calendar />
-        </div>
-        <div style={ { width: '300px', float: 'left'} }>
-            { list.map((list, index) => <GroupShareEach key={ index } list={ list } />) }
-        </div>
+            <NavigationLogin />
+            
+            <div style={ { width: '300px', float: 'left'} }>
+                { list.map((list, index) => <GroupShareEach key={ index } list={ list } />) }
+            </div>
         </>
     );
 }

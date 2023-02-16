@@ -1,7 +1,7 @@
 import { useState } from "react";
 import GroupShareDetailEach from "./GroupShareDetailEach";
 
-const GroupShareDetail = ({ match, history }) => {
+const GroupShareDetail = () => {
 
     return (
         <>

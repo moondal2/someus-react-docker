@@ -11,11 +11,14 @@ const Calendar = () => {
     date: new Date().getDate(), //오늘 날짜
     day: new Date().getDay(), //오늘 요일
   };
+  const [isClicked, setIsClicked] = useState(true);
   const week = ["일", "월", "화", "수", "목", "금", "토"]; //일주일
+  const [selectedDay, setSelectedDay] = useState(today.day); // 현재 선택된 날짜
   const [selectedYear, setSelectedYear] = useState(today.year); //현재 선택된 연도
   const [selectedMonth, setSelectedMonth] = useState(today.month); //현재 선택된 달
   const dateTotalCount = new Date(selectedYear, selectedMonth, 0).getDate(); //선택된 연도, 달의 마지막 날짜
 
+  // let isClicked = false;
   const prevMonth = useCallback(() => {
     //이전 달 보기 보튼
     if (selectedMonth === 1) {
@@ -85,6 +88,16 @@ const Calendar = () => {
   const changeSelectYear = (e) => {
     setSelectedYear(Number(e.target.value));
   };
+  // const changeSelectDay= (e) => {
+  //   console.log(e.target.className);
+  //   setisClicked(!isClicked);
+  //   setSelectedDay(Number(e.target.value));
+  // };
+
+  const changeSelectDay = (e) => {
+    e.preventDefault();
+    setIsClicked(!isClicked);
+  }
 
   const returnWeek = useCallback(() => {
     //요일 반환 함수
@@ -115,16 +128,22 @@ const Calendar = () => {
       if (week[day] === nowDay) {
         for (let i = 0; i < dateTotalCount; i++) {
           dayArr.push(
-            <div
+            <button
               key={i + 1}
+              value={i + 1}
+              isClicked='false'
+              onClick={ changeSelectDay }
               className={cx(
                 {
                   //오늘 날짜일 때 표시할 스타일 클라스네임
                   today:
                     today.year === selectedYear &&
                     today.month === selectedMonth &&
-                    today.date === i + 1,
+                    today.date === i + 1
+                    
                 },
+                
+                
                 { weekday: true }, //전체 날짜 스타일
                 {
                   //전체 일요일 스타일
@@ -147,7 +166,7 @@ const Calendar = () => {
               )}
             >
               {i + 1}
-            </div>
+            </button>
           );
         }
       } else {
@@ -164,14 +183,14 @@ const Calendar = () => {
         <h3>
           {yearControl()}년 {monthControl()}월
         </h3>
-        <input className="today" type={'button'} value="today"></input>
+        <input className="today" type='button' value="today"></input>
         <div className="pagination">
           <button onClick={prevMonth}>◀︎</button>
           <button onClick={nextMonth}>▶︎</button>
         </div>
       </div>
       <div className="week">{returnWeek()}</div>
-      <div className="date">{returnDay()}</div>
+      <div className="date" >{returnDay()}</div>
     </div>
   );
 };

@@ -9,8 +9,8 @@ import GroupShareList from './share_diary/GroupShareList';
 import ShareDiaryDetail from './share_diary/GroupShareDetail';
 import GroupDiaryWrite from './share_diary/GroupDiaryWrite';
 import { Link, Route } from 'react-router-dom';
-
-
+import AddGroup from './share_diary/AddGroup'
+import MyDiaryList from './private_diary/MyDiaryList';
 
 function App() {
 
@@ -33,10 +33,12 @@ function App() {
             <NavigationLogout />
             <hr />
             <NavigationDiary /> */}
-    {/* <Route path='/someus/share/grouplist' component={GroupList} exact={true}/> */}
-    {/* <Route path='/someus/share/:diaryId' component={ ShareDiaryDetail } exact={true}/> */}
-    {/* <Route path='/someus/share/write' component={ GroupDiaryWrite } exact={true}/> */}
+    <Route parh='someus/private' component={ MyDiaryList } exact={true} />
+    <Route path='/someus/share/grouplist' component={GroupList} exact={true}/>
+    <Route path='/someus/share/:shareroomid/:createddt' component={ ShareDiaryDetail } exact={true}/>
+    <Route path='/someus/share/write' component={ GroupDiaryWrite } exact={true}/>
     <Route path='/someus/share/groupsharelist' component={ GroupShareList } exact={true}/>
+    <Route path='/someus/addgroup' component={ AddGroup } exact={true}/>
     </>
   );
 }

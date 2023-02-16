@@ -82,6 +82,10 @@ button {
     /* border-radius: 50%; */
   }
 
+  .container .date .selectedDay .weekday{
+    background-color: red;
+  }
+
   .container .today {
     height: 20px;
     text-align: center;

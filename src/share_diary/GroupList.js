@@ -1,16 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ReactDatePicker from "react-datepicker";
+import NavigationDiary from "../navigation/NavigationDiary";
+
 
 const GroupList = (props) => {
-    
-    // const list = [ { title: '첫 번째 목록', img: '사진1'},
-    //                 { title: '두 번째 목록', img: '사진2'},
-    //                 { title: '세 번째 목록', img: '사진3'}];
-
+   
     const [ groupList, setGroupList ] = useState([]);
+    
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/someus/share/grouplist`)
+        axios.get(`http://localhost:8080/api/someus/share/grouplist`,
+                { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
             .then(response => {
                 console.log(response);
                 setGroupList(response.data);
@@ -24,19 +25,9 @@ const GroupList = (props) => {
         props.history.push('/someus/addgroup');
     };
 
-    // useEffect(() => {
-    //     axios.get(`http://localhost:8080/api/someus/share/grouplist`)
-    //         .then((response) => {
-    //             console.log(response);
-    //             setGroupList(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         })
-    // })
-
     return (
         <>
+            <NavigationDiary />
             <input type="button" 
                     value="추가"
                     onClick={ handlerClickAdd }></input>
@@ -49,5 +40,6 @@ const GroupList = (props) => {
         </>
     );
 }
+
 
 export default GroupList;

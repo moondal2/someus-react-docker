@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useState, useRef } from "react";
+import NavigationDiary from "../navigation/NavigationDiary";
 
 import './test.css';
 
 const GroupDiaryWrite = ({ history }) => {
 
     let weather = [ '맑음', '비', '눈', '흐림', '구름 많음' ];
-    let mood = [ 1, 2, 3, 4, 5]
+    let mood = [ 1, 2, 3, 4, 5];
 
     const [ weatherActive, setWeatherActive] = useState('');
     const [ moodActive, setMoodActive ] = useState('');
@@ -18,7 +19,7 @@ const GroupDiaryWrite = ({ history }) => {
 
     const toggleWeatherActive = (e) => {
         e.preventDefault();
-        setWeatherActive((prev) => {
+        setWeatherActive(() => {
             console.log(e.target.value);
             return e.target.value;
         });
@@ -26,7 +27,7 @@ const GroupDiaryWrite = ({ history }) => {
 
     const toggleMoodActive = (e) => {
         e.preventDefault();
-        setMoodActive((prev) => {
+        setMoodActive(() => {
             return e.target.value;
         });
     };
@@ -101,6 +102,7 @@ const GroupDiaryWrite = ({ history }) => {
             data: formData,
             headers: {
                 "Content-Type": `multipart/form-data; `,
+                'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`
               },
             })
             .then((response) => {
@@ -117,6 +119,7 @@ const GroupDiaryWrite = ({ history }) => {
     
     return (
         <>
+            <NavigationDiary />
             <h1>오늘의 일기</h1>
             <form onSubmit={ onSubmit }>
                 <div>
