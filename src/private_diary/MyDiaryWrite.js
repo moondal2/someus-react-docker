@@ -4,7 +4,7 @@ import NavigationDiary from "../navigation/NaviDiary";
 import './mydiarywrite.css'
 
 
-const MyDiaryWrite = ({ history }) => {
+const MyDiaryWrite = ({ history, name }) => {
 
     console.log(history);
 
@@ -95,37 +95,37 @@ const MyDiaryWrite = ({ history }) => {
     Object.values(imgFile).forEach((file) => formData.append("diary_img", file));
 
 
-    // const onSubmit = (e) => {
-    //     e.preventDefault();
+    const onSubmit = (e) => {
+        e.preventDefault();
 
-    //     axios({
-    //         method: 'post',
-    //         url: `http://localhost:8080/api/someus/share/write`,
-    //         data: formData,
-    //         headers: {
-    //             "Content-Type": `multipart/form-data; `,
-    //             'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`
-    //           },
-    //         })
-    //         .then((response) => {
-    //             console.log(response);
-    //             if(response.data.count === 1) {
-    //                 alert(`정상적으로 등록되었습니다.`);
-    //                 history.push('/someus/sharelist');
-    //             };
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         })
-    //     }
+        axios({
+            method: 'post',
+            url: `http://localhost:8080/api/someus/private/write`,
+            data: formData,
+            headers: {
+                "Content-Type": `multipart/form-data; `,
+                'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`
+              },
+            })
+            .then((response) => {
+                console.log(response);
+                if(response.data.count === 1) {
+                    alert(`정상적으로 등록되었습니다.`);
+                    history.push('/someus/private');
+                };
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
 
     return (
         <>
             <div className='background' style={{ backgroundImage: `url('../img/bg_myWrite.png')` }}>
-                <NavigationDiary />
+                <NavigationDiary name={ name }/>
                 <div className='container'>
                     <h1>오늘의 일기</h1>
-                    <form >
+                    <form onSubmit={ onSubmit }>
                         <div>
                             <div className='writeheader'>
                                 <div className='weather-container'>

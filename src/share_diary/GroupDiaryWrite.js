@@ -4,7 +4,7 @@ import NavigationDiary from "../navigation/NaviDiary";
 
 import './test.css';
 
-const GroupDiaryWrite = ({ history }) => {
+const GroupDiaryWrite = ({ history, name }) => {
 
     let weather = [ '맑음', '비', '눈', '흐림', '구름 많음' ];
     let mood = [ 1, 2, 3, 4, 5];
@@ -119,7 +119,7 @@ const GroupDiaryWrite = ({ history }) => {
     
     return (
         <>
-            <NavigationDiary />
+            <NavigationDiary name={ name }/>
             <h1>오늘의 일기</h1>
             <form onSubmit={ onSubmit }>
                 <div>

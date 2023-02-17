@@ -5,7 +5,7 @@ import GroupShareEach from "./GroupShareEach";
 
 
 
-const GroupShareList = () => {
+const GroupShareList = ({ name }) => {
    
     const [ list, setList ] = useState([]); 
     
@@ -23,7 +23,7 @@ const GroupShareList = () => {
 
     return (
         <>
-            <NavigationLogin />
+            <NavigationLogin name={ name }/>
             
             <div style={ { width: '300px', float: 'left'} }>
                 { list.map((list, index) => <GroupShareEach key={ index } list={ list } />) }

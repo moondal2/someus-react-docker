@@ -9,27 +9,36 @@ import pentool from 'C:/javascript/someus-app/src/img/pentool.png';
 import NaviDiary from "../navigation/NaviDiary";
 import '../navigation/navi.css';
 import './mydiarylist.css';
+import jwt_decode from "jwt-decode";
 
 
+const MyDiaryList = ({ match, history, name }) => {
+
+    const [ list, setList ] = useState([]);
+    const [ startDate, setStartDate ] = useState(new Date());
+    const { diaryId } = match.params;
+    const [ userId, setUserId ] = useState('');
+    const [ userName, setUserName ] = useState('');
 
 
-const MyDiaryList = ({ history, name }) => {
-
-    const [list, setList] = useState([]);
-    const [startDate, setStartDate] = useState(new Date());
-
-    // useEffect(() => {
-    //     axios.get(`http://localhost:8080/api/someus/private`,
-    //         { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
-    //         .then((response) => {
-    //             console.log(response);
-    //             setList(response.data.list);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //             return;
-    //         })
-    // })
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        const decode_token = jwt_decode(token);
+        console.log(decode_token);
+        
+        axios.get(`http://localhost:8080/api/someus/private`,
+            { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
+            .then((response) => {
+                console.log(response);
+                setList(response.data.list);
+                setUserId(response.data.list.userId);
+                setUserName(response.data.list.userName);
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            })
+    }, []);
 
     // 요일의 이름 반환
     const getDayName = (date) => {
@@ -54,11 +63,17 @@ const MyDiaryList = ({ history, name }) => {
 
     // 날짜 변경 시 해당 날짜를 기준으로 목록이 리랜더링
     const handlerChangeDate = (date) => {
+        console.log(date);
+        
         setStartDate(date);
-        axios.get(`http://localhost:8080/api/someus/private/다이어리아이디`,
+        axios.get(`http://localhost:8080/api/someus/private/${diaryId}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
                 console.log(response);
+
+
+                setStartDate(date);
+
                 // 해당하는 날짜에 대한 일기의 데이터가 없을 경우
                 if (response.data.list === null) {
                     alert(`일기를 작성하지 않았어요.`);
@@ -81,8 +96,7 @@ const MyDiaryList = ({ history, name }) => {
                 style={{ backgroundImage: `url('../img/bg_mylist.png')`}} >
                  {/* <img src={backimg} style={ { backgroundAttachment: 'fixed'}}/> */}
                 <div className='body' >
-                    <div className="calendar-container"
-                    >
+                    <div className="calendar-container">
                         <div className="calendar-box">
                             <DatePicker
                                 // 시작 날짜 셋팅

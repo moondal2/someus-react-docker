@@ -4,7 +4,7 @@ import ReactDatePicker from "react-datepicker";
 import NavigationDiary from "../navigation/NaviDiary";
 
 
-const GroupList = (props) => {
+const GroupList = ({ name, history }) => {
    
     const [ groupList, setGroupList ] = useState([]);
     
@@ -22,12 +22,12 @@ const GroupList = (props) => {
     })
 
     const handlerClickAdd = () => {
-        props.history.push('/someus/addgroup');
+        history.push('/someus/addgroup');
     };
 
     return (
         <>
-            <NavigationDiary />
+            <NavigationDiary name={ name }/>
             <input type="button" 
                     value="추가"
                     onClick={ handlerClickAdd }></input>

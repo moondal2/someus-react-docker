@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState, useRef } from "react";
+import NaviDiary from "../navigation/NaviDiary";
 
 
-const AddGroup = ({ history }) => {
+
+const AddGroup = ({ history, name }) => {
 
     const [ shareRoomName, setShareRoomName ] = useState('');
     const [ memberId, setMemberId ] = useState('');
@@ -36,6 +38,7 @@ const AddGroup = ({ history }) => {
 
     return (
         <>
+        <NaviDiary name={ name }/>
             <div style={ { marginLeft: '10px'} }>
                 <form onSubmit={ onSubmit }>
                     <input style={ { width: '300px', height: '40px'} }
