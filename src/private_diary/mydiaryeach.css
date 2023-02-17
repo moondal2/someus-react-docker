@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'BMDOHYEON';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.eachdiary .diaryimg img{
+    width: 250px;
+    height: 250px;
+}
+
+/* 각각 다이어리 위치 조정 */
+.eachdiary {
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 330px;
+}
+
+.eachdiary .diarydate {
+    text-align: center;
+    font-weight: bold;
+    padding-top: 10px;
+    font-family: 'BMDOHYEON';
+    font-size: 13px;
+}

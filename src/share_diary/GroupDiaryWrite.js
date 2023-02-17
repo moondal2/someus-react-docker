@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useRef } from "react";
-import NavigationDiary from "../navigation/NavigationDiary";
+import NavigationDiary from "../navigation/NaviDiary";
 
 import './test.css';
 

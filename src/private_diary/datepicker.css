@@ -1,14 +1,26 @@
+@font-face {
+  font-family: 'BMDOHYEON';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .react-datepicker {
   font-size: 13px !important;
   margin-left: 50px !important;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .react-datepicker__current-month {
   font-size: 15px !important; 
 }
 
+/* 달력 헤더(월, 년도 뜨는 부분) */
 .react-datepicker__header {
-  padding-top: 6px !important; 
+  padding-top: 15px !important; 
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  font-family: 'BMDOHYEON';
+  font-weight: normal;
 }
 
 .react-datepicker__navigation {
@@ -17,6 +29,7 @@
 
 .react-datepicker__day-name, .react-datepicker__day {
   margin: 0.5rem !important; 
+  font-family: 'BMDOHYEON';
 }
 
 .saturday {
@@ -31,22 +44,26 @@
   color: #cccccc !important; 
 }
 
-.react-datepicker__header {
-  
-  background-color: white !important;
-}
-
 .react-datepicker,
 .react-datepicker__header  {
   width: 300px;
 }
 
+/* today 버튼 */
 .react-datepicker__today-button {
-  width: 50px !important;
-  border: 1px solid black !important;
+  width: 70px !important;
+  height: 20px !important;
+  vertical-align: middle !important;
+  line-height: 20px !important;
+  background-color: white;
+  border: 1px solid #cccccc !important;
   border-radius: 3px !important;
-  margin-left: 10px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   margin-bottom: 10px !important;
+  text-align: center;
+  font-family: 'BMDOHYEON';
+  
 }
 
 .react-datepicker__current-month {
@@ -72,10 +89,14 @@
 }
 
 .react-datepicker__day--today {
-  border: 2px solid #14B21F !important;
+  border: 2px solid #B4D4FC !important;
   background: none !important;
   border-radius: 50% !important;
   color: black !important;
   font-weight: bold !important;
   /* box-sizing: border-box !important; */
+}
+
+react-datepicker__today-button {
+  margin-left: 50px !important;
 }

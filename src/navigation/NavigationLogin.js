@@ -7,7 +7,7 @@ const NavigationLogin = (props) => {
     };
 
     const handlerClickMyPage = () => {
-        props.history.push('/someus/private/~~');
+        // TODO. props.history.push('/someus/private/~~');
     };
 
     const handlerClickGuide = () => {

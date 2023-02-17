@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
-import NavigationDiary from "../navigation/NavigationDiary";
+import NavigationDiary from "../navigation/NaviDiary";
 
 
 const GroupList = (props) => {
