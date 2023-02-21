@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState, useRef } from "react";
+import jwt_decode from "jwt-decode";
+import { useState, useEffect } from "react";
 import NavigationDiary from "../navigation/NaviDiary";
 import './mydiarywrite.css'
 
@@ -8,17 +9,68 @@ const MyDiaryWrite = ({ history, name }) => {
 
     console.log(history);
 
-    let weather = ['맑음', '비', '눈', '흐림', '구름 많음'];
-    let mood = [1, 2, 3, 4, 5];
+    const [ weather, setWeather ] = useState([]);
+    const [ mood, setMood ] = useState([]);
+    const [ weatherActive, setWeatherActive ] = useState('');
+    const [ moodActive, setMoodActive ] = useState('');
+    const [ imgBase64, setImgBase64 ] = useState([]);
+    const [ imgBase, setImgBase ] = useState([1]);
+    const [ imgFile, setImgFile ] = useState([]);
+    const [ contents, setContents ] = useState('');
 
-    const [weatherActive, setWeatherActive] = useState('');
-    const [moodActive, setMoodActive] = useState('');
-    const [imgBase64, setImgBase64] = useState([]);
-    const [imgBase, setImgBase] = useState([1]);
-    const [imgFile, setImgFile] = useState([]);
-    const [contents, setContents] = useState('');
+    // 화면이 로드될 때 get 방식을 사용해 weather 버튼과 mood 버튼 출력
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        const decode_token = jwt_decode(token);
+        console.log(decode_token);
+        
+        axios.get(`http://localhost:8080/api/someus/private/write`,
+            { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
+            .then((response) => {
+                console.log(response.data);
+                console.log(response.data.weatherList[1]);
+                console.log(response.data.moodList);
+                setWeather(response.data.weatherList);
+                setMood(response.data.moodList);
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            })
+    }, [])
 
+    // 날씨 버튼 출력
+    const weatherList = () => {
+        const result=[];
+        for( let i=0; i<weather.length; i++) {
+            result.push(
+                <>
+                    <img src={weather[i].weatherImg} 
+                        className={"btn" + (weather[i].weatherId == weatherActive ? " active" : "")}
+                        onClick={toggleWeatherActive}/>
+                </>
+                );
+        
+        } return result;
+    };
+    
+    // 기분 버튼 출력
+    const moodList = () => {
+        const result=[];
+        console.log(mood.length);
+        for( let i=0; i<mood.length; i++) {
+            result.push(
+                <>
+                    <img src={mood[i].moodImg} 
+                        className={"btn" + (mood[i].moodId == moodActive ? " active" : "")}
+                        onClick={toggleMoodActive} />
+                </>
+                );
+        
+        } return result;
+    };
 
+    // 날씨, 기분 토글
     const toggleWeatherActive = (e) => {
         e.preventDefault();
         setWeatherActive(() => {
@@ -130,37 +182,11 @@ const MyDiaryWrite = ({ history, name }) => {
                             <div className='writeheader'>
                                 <div className='weather-container'>
                                     <p>오늘의 날씨</p>
-                                    {weather.map((item, idx) => {
-                                        return (
-                                            <>
-                                                <button
-                                                    key={idx}
-                                                    value={idx}
-                                                    className={"btn" + (idx == weatherActive ? " active" : "")}
-                                                    onClick={toggleWeatherActive}
-                                                >
-                                                    {item}
-                                                </button>
-                                            </>
-                                        );
-                                    })}
+                                    {weatherList()}
                                 </div>
                                 <div className='mood-container'>
                                     <p>오늘의 기분은?</p>
-                                    {mood.map((item, idx) => {
-                                        return (
-                                            <>
-                                                <button
-                                                    key={idx}
-                                                    value={idx}
-                                                    className={"btn" + (idx == moodActive ? " active" : "")}
-                                                    onClick={toggleMoodActive}
-                                                >
-                                                    {item}
-                                                </button>
-                                            </>
-                                        );
-                                    })}
+                                    {moodList()}
                                 </div>
                             </div>
 

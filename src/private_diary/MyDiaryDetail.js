@@ -1,18 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { withRouter } from 'react-router-dom';
 
-const GroupShareDetailEach = ({ match, history }) => {
-    
-    const { shareroomId, createdDt } = match.params;
-    
+
+const MyDiaryDetail = ({ match, history }) => {
+
     const [ diary, setDiary ] = useState({});
     const [ weather, setWeather ] = useState('');
     const [ mood, setMood ] = useState('');
     const [ contents, setContents ] = useState('');
 
+    const { diaryId } = match.params;
+
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/someus/share/${shareroomId}/${createdDt}`,
+        console.log(match);
+        axios.get(`http://localhost:8080/api/someus/private/${diaryId}`,
                     { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
             .then(response =>{
                 console.log(response);
@@ -24,20 +25,28 @@ const GroupShareDetailEach = ({ match, history }) => {
             .catch(error => {
                 console.log(error);
             })
-    });
+    },[]);
+
+    const hanlderChangeContents = (e) => {
+        setContents(e.target.value);
+        console.log(contents);
+    }
 
     const handlerOnClickUpdate = () => {
-        axios.put(`http://localhost:8080/api/someus/share/${shareroomId}/${createdDt}`)
+        axios.put(`http://localhost:8080/api/someus/private/${diaryId}`,
+                    { "diaryContent": contents },
+                    { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
             .then((response) => {
                 if(response.data === 1) {
                     alert(`정상적으로 수정되었습니다.`);
-                    JSON.stringify(history).push('/someus/share/groupsharelist');
+                    history.push(`/someus/private/${diaryId}`);
                 } else {
                     alert(`수정에 실패했습니다.`);
                     return;
                 }
             })
             .catch((error) => {
+                console.log(contents);
                 console.log(error);
                 alert(`수정에 실패했습니다.`);
                     return;
@@ -45,11 +54,12 @@ const GroupShareDetailEach = ({ match, history }) => {
     };
 
     const handlerOnClickDelete = () => {
-        axios.delete(`http://localhost:8080/api/someus/share/${shareroomId}/${createdDt}`)
+        axios.delete(`http://localhost:8080/api/someus/private/${diaryId}`,
+        { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
             .then((response) => {
                 if(response.data === 1) {
                     alert(`정상적으로 삭제되었습니다.`);
-                    JSON.stringify(history).push('/someus/share/groupsharelist');
+                    history.push('/someus/private');
                 } else {
                     alert(`삭제에 실패했습니다.`);
                     return;
@@ -71,9 +81,12 @@ const GroupShareDetailEach = ({ match, history }) => {
                 </div>
                 <div>
                     <p>{ diary.createdDt}</p>
-                    <p>{ diary.weatherId }</p>
-                    <p>{ diary.moodId }</p>
-                    <p>{ diary.diaryContents }</p>
+                    <p>{ diary.moodImg }</p>
+                    <p>{ diary.weatherImg }</p>
+                    <input type='text'
+                            value={ diary.diaryContents }
+                            onChange={ hanlderChangeContents } />
+
                     <input type="button" 
                             value="연필"
                             onClick={ handlerOnClickUpdate } />
@@ -87,4 +100,4 @@ const GroupShareDetailEach = ({ match, history }) => {
     );
 }
 
-export default withRouter(GroupShareDetailEach);
+export default MyDiaryDetail;

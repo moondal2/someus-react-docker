@@ -70,8 +70,6 @@ const MyDiaryList = ({ match, history, name }) => {
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
                 console.log(response);
-
-
                 setStartDate(date);
 
                 // 해당하는 날짜에 대한 일기의 데이터가 없을 경우
@@ -80,7 +78,7 @@ const MyDiaryList = ({ match, history, name }) => {
                 }
                 // 해당하는 날짜에 대한 일기의 데이터가 있는 경우 리스트를 새로 만들어 map 함수 실행
                 else {
-                    // history.push(`/someus/private/${diaryId}`);
+                    history.push(`/someus/private/${diaryId}`);
                 }
             })
             .catch((error) => {
@@ -123,7 +121,7 @@ const MyDiaryList = ({ match, history, name }) => {
                         
                         <button className='write' onClick={handlerClickWrite}>
                             <div className='write-button'>
-                                <img src={pentool} style={ {width: '15px', height: '15px'}}/>
+                                <img src={pentool} alt='write' style={ {width: '15px', height: '15px'}}/>
                                 <span> 일기 쓰기 </span>
                             </div>
                         </button>
