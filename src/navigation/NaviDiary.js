@@ -23,13 +23,18 @@ const NaviDiary = (props) => {
     }, []);
 
     const handlerClickHome = () => {
-        props.history.push('/someus');
+        props.history.push('/someus/mainpage');
     };
 
     const handlerClickMyPage = () => {
-        props.history.push(`/someus/private/${memberId}`);
+        props.history.push(`/someus/mypage`);
     };
 
+    const handlerClickLogout = () => {
+        alert('로그아웃되었습니다.');
+        sessionStorage.clear();
+        props.history.push('/someus/mainpage')
+    };
     
    
     return (
@@ -48,7 +53,7 @@ const NaviDiary = (props) => {
                     <button type="button"
                             className= 'logout' 
                             value="로그아웃"
-                            onClick={ handlerClickMyPage }><img src={logout} /></button>
+                            onClick={ handlerClickLogout }><img src={logout} /></button>
                 </div>
             </div>
         </>

@@ -5,12 +5,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import './datepicker.css';
 import MyDiaryEach from "./MyDiaryEach";
 import ko from 'date-fns/locale/ko';
-import pentool from 'C:/javascript/someus-app/src/img/pentool.png';
 import NaviDiary from "../navigation/NaviDiary";
 import '../navigation/navi.css';
 import './mydiarylist.css';
 import jwt_decode from "jwt-decode";
 import TodoList from "./TodoList";
+import Modal_Mydiary from "./Modal_Mydiary";
 
 
 const MyDiaryList = ({ match, history }) => {
@@ -20,7 +20,16 @@ const MyDiaryList = ({ match, history }) => {
     const { diaryId } = match.params;
     const [ memberId, setMemberId ] = useState('');
     const [ memberName, setMemberName ] = useState('');
+    const [ modalState, setModalState ] = useState([]);
+    const [ selectedDate, setSelectedDate ] = useState('');
 
+    const closeModal = (index) => {
+        setModalState(prevState =>{
+            const updateArray = [...prevState];
+            updateArray[index] = false;
+            return updateArray;
+        });
+    };
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
@@ -29,11 +38,22 @@ const MyDiaryList = ({ match, history }) => {
         setMemberName(decode_token.name);
 
         let memberId = decode_token.sub;
-
+        
         axios.get(`http://localhost:8080/api/someus/private/page/${memberId}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
                 setList(response.data.diaryList);
+                
+                for (let i = 0; i < list.length; i++){
+                    setModalState(prevState => {
+                        const updateModalArray = [...prevState];
+                        updateModalArray[i] = false;
+                        return updateModalArray;
+                    });
+                }
+                console.log(modalState);
+                console.log(memberId);
+                console.log(list);
             })
             .catch((error) => {
                 console.log(error);
@@ -60,94 +80,112 @@ const MyDiaryList = ({ match, history }) => {
 
     const handlerClickWrite = () => {
         history.push(`/someus/private/write`)
-    }
+    };
+
+    
+
+    const formatDate = (date) => {
+        if (!date) return '';
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
 
     // 날짜 변경 시 해당 날짜를 기준으로 목록이 리랜더링
     const handlerChangeDate = (date) => {
-        console.log(date);
-        
-        setStartDate(date);
-        axios.get(`http://localhost:8080/api/someus/private/${diaryId}`,
+        setSelectedDate(date)
+        console.log(formatDate(selectedDate))
+        const createdDt = formatDate(selectedDate);
+        axios.get(`http://localhost:8080/api/someus/private/page/${memberId}/${createdDt}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
-                console.log(response);
-                setStartDate(date);
-                { console.log(response.data.list)}
+                console.log(response.data);
                 // 해당하는 날짜에 대한 일기의 데이터가 없을 경우
-                if (response.data.list === null) {
+                if (list === null) {
                     alert(`일기를 작성하지 않았어요.`);
                 }
                 // 해당하는 날짜에 대한 일기의 데이터가 있는 경우 리스트를 새로 만들어 map 함수 실행
                 else {
-                    history.push(`/someus/private/${diaryId}`);
+                    setList(response.data);
                 }
             })
             .catch((error) => {
                 console.log(error);
             })
-    }
+    };
+
+    const handlerClickDetail = (index) => {
+        setModalState(prevState =>{
+            const updateArray = [...prevState];
+            updateArray[index] = true;
+            return updateArray;
+        });
+       
+    };
+
+    const result = () => {
+        return list && list.map((list, index) => {
+          return (
+            <div key={index} id={list.diaryId}>           
+              {modalState[index] && <Modal_Mydiary match={match} closeModal={()=>closeModal(index)} id={list.diaryId} list={list}/>}
+              <button className="diaryeachbutton" type="button" value={list.diaryId} onClick={() => handlerClickDetail(index)}>
+                <MyDiaryEach list={list} />
+              </button>
+            </div>
+          );
+        });
+      };
 
     return (
         <>
-        <div style={{ border: '3px solid red' }}>
-            <NaviDiary />
-            <div className='background'
-                style={{ backgroundImage: `url('../img/bg_mylist.png')`}} >
-                 {/* <img src={backimg} style={ { backgroundAttachment: 'fixed'}}/> */}
-                <div className='body' >
-                    <div className="calendar-container">
-                        <div className="calendar-box">
-                            <DatePicker
-                                // 시작 날짜 셋팅
-                                selected={startDate}
-                                locale={ko}
-                                // 날짜가 클릭되면 해당 날짜로 이동
-                                onChange={handlerChangeDate}
-                                inline
-                                // 토, 일 색깔 변경
-                                dayClassName={date =>
-                                    getDayName(createDate(date)) === '토' ? "saturday"
-                                        :
-                                        getDayName(createDate(date)) === '일' ? "sunday" : undefined
-                                }
-                                todayButton="today"
-                            />
-                        </div>
-                        <div className="todo-box">
-                                <TodoList />
-                        </div>
-                    </div>
-                    <div className='diary-container'>
-                        <div>
-                            <p>{ memberName }의 일기</p>
-                            <p className='date'>{startDate.getMonth() + 1} {startDate.toLocaleString("en-US", { month: "long" })}</p>
-                        </div>
-                        
-                        <button className='write' onClick={handlerClickWrite}>
-                            <div className='write-button'>
-                                <img src={pentool} alt='write' style={ {width: '15px', height: '15px'}}/>
-                                <span> 일기 쓰기 </span>
+            <div>
+                <NaviDiary history={history}/>
+                <div className='diarylist_background'
+                    style={{ backgroundImage: `url('../img/bg_mylist.png')` }} >
+                    {/* <img src={backimg} style={ { backgroundAttachment: 'fixed'}}/> */}
+                    <div className='body' >
+                        <div className="calendar-container">
+                            <div className="calendar-box">
+                                <DatePicker
+                                    // 시작 날짜 셋팅
+                                    // selected={startDate}
+                                    locale={ko}
+                                    selected={selectedDate}
+                                    // 날짜가 클릭되면 해당 날짜로 이동
+                                    onChange={handlerChangeDate}
+                                    inline
+                                    // 토, 일 색깔 변경
+                                    dayClassName={date =>
+                                        getDayName(createDate(date)) === '토' ? "saturday"
+                                            :
+                                            getDayName(createDate(date)) === '일' ? "sunday" : undefined
+                                    }
+                                    todayButton="today"
+                                />
                             </div>
-                        </button>
-
-
-
-
-                        {/* <img src={pentool} />
-                        <input type='button'
-                            value='일기 쓰기'
-                            onClick={handlerClickWrite} /> */}
-                        <div className='diary'>
-                            <div style={{ width: '300px', float: 'left' }}>
-                            {list.map((list, index) => <MyDiaryEach key={index} list={list} />)}
+                            <div className="todo-box">
+                                <TodoList />
+                            </div>
                         </div>
-                            {/* 하드코딩 테스트용 */}
-                           
+                        <div className='diary-container'>
+                            <div>
+                                <p className="name_diary">{ memberName }의 일기</p>
+                                <p className='date'>{startDate.getMonth() + 1} {startDate.toLocaleString("en-US", { month: "long" })}</p>
+                            </div>
+
+                            <button className='write' onClick={handlerClickWrite}>
+                                <div className='write-button' />
+                                <span> 일기쓰기 </span>
+                            </button>
+
+                            <div className='diary'>
+                                <div className="diaryWrap">{ list && result() }</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
             </div>
         </>
     );

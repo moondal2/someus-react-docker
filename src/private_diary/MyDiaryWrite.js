@@ -4,37 +4,32 @@ import { useState, useEffect } from "react";
 import NaviDiary from "../navigation/NaviDiary";
 import './mydiarywrite.css'
 
+const MyDiaryWrite = ({ history }) => {
 
-const MyDiaryWrite = ({ history, name }) => {
-
-    console.log(history);
-
-    const [ weather, setWeather ] = useState([]);
-    const [ mood, setMood ] = useState([]);
-    const [ weatherActive, setWeatherActive ] = useState('');
-    const [ moodActive, setMoodActive ] = useState('');
-    const [ imgBase64, setImgBase64 ] = useState([]);
-    const [ imgBase, setImgBase ] = useState([1]);
-    const [ imgFile, setImgFile ] = useState([]);
-    const [ contents, setContents ] = useState('');
-    const [ username, setUsername ] = useState('');
-    const [ userId, setUserId ] = useState('');
+    const [weather, setWeather] = useState([]);
+    const [mood, setMood] = useState([]);
+    const [weatherActive, setWeatherActive] = useState(1);
+    const [moodActive, setMoodActive] = useState('');
+    const [imgBase64, setImgBase64] = useState([]);
+    const [imgBase, setImgBase] = useState([1]);
+    const [imgFile, setImgFile] = useState([]);
+    const [contents, setContents] = useState('');
+    const [username, setUsername] = useState('');
+    const [userId, setUserId] = useState('');
 
     // 화면이 로드될 때 get 방식을 사용해 weather 버튼과 mood 버튼 출력
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         const decode_token = jwt_decode(token);
-        
+
         axios.get(`http://localhost:8080/api/someus/private/write`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
-                console.log(response.data);
-                console.log(response.data.weatherList[1]);
-                console.log(response.data.moodList);
                 setWeather(response.data.weatherList);
                 setMood(response.data.moodList);
                 setUsername(decode_token.name);
                 setUserId(decode_token.sub);
+                console.log(weather);
             })
             .catch((error) => {
                 console.log(error);
@@ -44,50 +39,49 @@ const MyDiaryWrite = ({ history, name }) => {
 
     // 날씨 버튼 출력
     const weatherList = () => {
-        const result=[];
-        for( let i=0; i<weather.length; i++) {
+        const result = [];
+        for (let i = 0; i < weather.length; i++) {
             result.push(
                 <>
-                <p>{weather[i].weatherId}</p>
-                    {/* <img src={weather[i].weatherImg} 
-                        className={"btn" + (weather[i].weatherId == weatherActive ? " active" : "")}
-                        onClick={toggleWeatherActive}/> */}
+                    <img src={weather[i].weatherId == weatherActive
+                        ? `/img/weatherC_${weather[i].weatherId}.png`
+                        : `/img/weather_${weather[i].weatherId}.png`}
+                        style={{ width: '30px', height: '30px' }}
+                        onClick={toggleWeatherActive}
+                        alt={weather[i].weatherId} />
                 </>
-                );
-        
+            );
         } return result;
     };
-    
+
     // 기분 버튼 출력
     const moodList = () => {
-        const result=[];
-        for( let i=0; i<mood.length; i++) {
+        const result = [];
+        for (let i = 0; i < mood.length; i++) {
             result.push(
                 <>
-                <p>{mood[i].moodId}</p>
-                    {/* <img src={mood[i].moodImg} 
-                        className={"btn" + (mood[i].moodId == moodActive ? " active" : "")}
-                        onClick={toggleMoodActive} /> */}
+                    <img
+                        src={mood[i].moodId == moodActive
+                            ? `/img/mood_${mood[i].moodId}.png`
+                            : `/img/mood_${mood[i].moodId}.png`}
+                        style={{ width: '30px', height: '30px' }}
+                        onClick={toggleMoodActive}
+                        alt={mood[i].moodId} />
                 </>
-                );
-        
+            );
         } return result;
     };
 
     // 날씨, 기분 토글
     const toggleWeatherActive = (e) => {
         e.preventDefault();
-        setWeatherActive(() => {
-            console.log(e.target.value);
-            return e.target.value;
-        });
+        setWeatherActive(e.target.alt);
+        console.log(weatherActive);
     };
 
     const toggleMoodActive = (e) => {
         e.preventDefault();
-        setMoodActive(() => {
-            return e.target.value;
-        });
+        setMoodActive(e.target.alt);
     };
 
     const handlerOnChangeContents = (e) => {
@@ -139,11 +133,8 @@ const MyDiaryWrite = ({ history, name }) => {
     };
 
     const diaryDto = {
-        // weatherId: 'weatherActive',
-        // moodId: 'moodActive',
-        // diaryId,
-        weatherId: '1',
-        moodId: '1',
+        weatherId: 'weatherActive',
+        moodId: 'moodActive',
         diaryContent: contents,
         memberId: userId
     };
@@ -164,12 +155,12 @@ const MyDiaryWrite = ({ history, name }) => {
             data: formData,
             headers: {
                 "Content-Type": `multipart/form-data; `,
-                'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`
-              },
-            })
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            },
+        })
             .then((response) => {
                 console.log(response);
-                if(response.data.count === 1) {
+                if (response.data.count === 1) {
                     alert(`정상적으로 등록되었습니다.`);
                     history.push('/someus/private');
                 };
@@ -177,15 +168,15 @@ const MyDiaryWrite = ({ history, name }) => {
             .catch(error => {
                 console.log(error);
             })
-        }
+    }
 
     return (
         <>
-            <div className='background' style={{ backgroundImage: `url('../img/bg_myWrite.png')` }}>
-                <NaviDiary/>
+            <NaviDiary history={history} />
+            <div className='mydiarywrite_background'>
                 <div className='container'>
                     <h1>오늘의 일기</h1>
-                    <form onSubmit={ onSubmit }>
+                    <form onSubmit={onSubmit}>
                         <div>
                             <div className='writeheader'>
                                 <div className='weather-container'>

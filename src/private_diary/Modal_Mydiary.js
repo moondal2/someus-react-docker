@@ -1,14 +1,45 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import './modal_mydiary.css';
 
-const Modal_Mydiary = (props) => {
+const Modal_Mydiary = (props, { history }) => {
+    //모달 
+    const [ diary, setDiary ] = useState({});
+    
+    const [ weather, setWeather ] = useState('');
+    const [ mood, setMood ] = useState('');
+    const [ contents, setContents ] = useState('');
+    const image = `http://localhost:8080/api/getImage/` + props.list.diaryImg;
+
+    const diaryId = props.list.diaryId;
+    
+    const moodImg = (mood) => {
+        if (mood == 0) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_1.png`} /> }
+        else if (mood == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_2.png`} /> }
+        else if (mood == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_3.png`} /> }
+        else if (mood == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_4.png`} /> }
+        else if (mood == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_5.png`} /> }
+    };
+
+    const weatherImg = (weather) => {
+        if (weather == 0) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_1.png`} /> }
+        else if (weather == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_2.png`} /> }
+        else if (weather == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_3.png`} /> }
+        else if (weather == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_4.png`} /> }
+        else if (weather == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_5.png`} /> }
+    }
 
     useEffect(() => {
-        document.body.style.cssText = `
+        document.body.style.cssText = `a
         position: fixed;
         top: -${window.scrollY}px;
         overflow-y: scroll;
         width: 100%;`;
+        
+        console.log(props.list);
+        setContents(props.list.diaryContent);
+        setMood(props.list.moodId);
+        setWeather(props.list.weatherId);
 
         return () => {
             const scrollY = document.body.style.top;
@@ -20,31 +51,77 @@ const Modal_Mydiary = (props) => {
     const modalClose = () => {
         props.closeModal();
         console.log(props.closeModal());
-    }
+    };
 
-    const dairyContents = '아니한 우리는 그들의 맺어, 피가 끓는다. 이상을 풀이 것은 몸이 동산에는 꽃이 있는가? 만천하의 뼈 얼음이 예가 끓는 능히 산야에 끓는 것이다. 들어 꽃이 튼튼하며, 구하기 있는 무한한 것이다. 그러므로 피에 사랑의 있는 이상, 끓는 위하여서. 되려니와, 힘차게 미묘한 보라. 천지는 힘차게 위하여 이상 가슴이 것이다. 얼마나 없는 청춘을 위하여, 것이다. 우리는 가슴에 불러 커다란 청춘에서만 황금시대의 가치를 것이다. 듣기만 되는 보이는 시들어 곳이 무엇을 교향악이다. 방황하였으며, 얼마나 천지는 천하를 있는가? 미묘한 없으면, 청춘에서만 온갖 인생을 군영과 꽃이 보라. 청춘은 놀이 인도하겠다는 갑 가는 것은 앞이 가는 황금시대다. 날카로우나 이것은 타오르고 .'
+    const hanlderChangeContents = (e) => {
+        setContents(e.target.value);
+        console.log(contents);
+    };
+
+    const handlerOnClickUpdate = () => {
+        axios.put(`http://localhost:8080/api/someus/private/${diaryId}`,
+                    { "diaryContent": contents },
+                    { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
+            .then((response) => {
+                if(response.data === 1) {
+                    alert(`정상적으로 수정되었습니다.`);
+                    props.closeModal();
+                } else {
+                    alert(`수정에 실패했습니다.`);
+                    return;
+                }
+            })
+            .catch((error) => {
+                console.log(contents);
+                console.log(error);
+                alert(`수정에 실패했습니다.`);
+                    return;
+            })
+    };
+
+    const handlerOnClickDelete = () => {
+        axios.delete(`http://localhost:8080/api/someus/private/${diaryId}`,
+        { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
+            .then((response) => {
+                if(response.data === 1) {
+                    alert(`정상적으로 삭제되었습니다.`);
+                    props.closeModal();
+                } else {
+                    alert(`삭제에 실패했습니다.`);
+                    return;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(`삭제에 실패했습니다.`);
+                return;
+            })
+    };
 
     return (
         <>
-            <div className="modal" onClick={modalClose}>
+            <div className="modal" onClick={props.closeModal}>
                 <div className="modalBody" onClick={(e) => e.stopPropagation()}>
                     <div className="modelLeft">
-                    <img className="modalImg" src={require("../img/mood_2.png")} />
+                    <img className="modalImg" src={image} />
                     </div>
                     <div className="modalRight">
                         <div className="modalRightHeader">
-                            <span>2023. 02. 17</span>
+                        <span className="write_day">{props.list.createdDt}</span>
                             <div className="modalRightHeaderRight">
-                                <span>흐림</span>
-                                <span>무지개</span>
+                            <span>{weatherImg(weather)}</span>
+                            <span>{moodImg(mood)}</span>
                             </div>
                         </div>
+
                         <div className="middleLine"></div>
                         <hr id="middleLine" />
-                        <p className="dairyContents">{dairyContents}</p>
+
+                        <textarea className='dairyContents' value={contents} onChange={hanlderChangeContents}></textarea>
+                        
                         <div className="bottom">
-                            <button className="modalCloseBtn">연필</button>
-                            <button className="modalCloseBtn" onClick={modalClose}>휴지통</button>
+                            <button className="modalCloseBtn" onClick={handlerOnClickUpdate}>연필</button>
+                            <button className="modalCloseBtn" onClick={handlerOnClickDelete}>휴지통</button>
                         </div>
                         {props.children}
                     </div>

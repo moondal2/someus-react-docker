@@ -3,10 +3,13 @@ import jwt_decode from "jwt-decode";
 import { useState, useRef, useEffect } from "react";
 import './addgroup.css';
 import AddGroupNext from "./AddGroupNext";
+import NaviDiary from "../navigation/NaviDiary";
 
 const AddGroup = (props, { history }) => {
     //AddGroupNext모달 값
-    const [modalState, setModalState] = useState(false);
+    const [ modalState, setModalState ] = useState(false);
+    const [ shareRoomName, setShareRoomName ] = useState('');
+    const [ memberName, setMemberName ] = useState('');
 
     const closeModal = () => {
         setModalState(false);
@@ -32,8 +35,6 @@ const AddGroup = (props, { history }) => {
         console.log(props.closeModal());
     }
 
-    const [ shareRoomName, setShareRoomName ] = useState('');
-    const [ memberName, setMemberName ] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -63,6 +64,7 @@ const AddGroup = (props, { history }) => {
 
     return (
         <>
+            <NaviDiary history={history}/>
             <div className="modal" onClick={modalClose}>
                 <div className="modalBody" onClick={(e) => e.stopPropagation()}>
                     <div className="addgroup_background" >

@@ -9,29 +9,26 @@ const MyDiaryEach = ({ list }) => {
     const [ diaryId, setDiaryId ] = useState(0);
     const image = `http://localhost:8080/api/getImage/` + list.diaryImg;
 
-    const handlerClick = () => {
-        axios.get(`http://localhost:8080/api/someus/private/${diaryId}`)
-            .then((response) => {
-                console.log(response);
-                console.log(response.data.list);
-                setDiaryId(response.data.list.diaryId);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+    // const handlerClick = (e) => {
+    //     axios.get(`http://localhost:8080/api/someus/private/${diaryId}`)
+    //         .then((response) => {
+    //             console.log(response);
+    //             console.log(e.target);
+    //             console.log(response.data.list);
+    //             setDiaryId(response.data.list.diaryId);
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         })
+    // }
+
+    
     return (
-        <div className='eachdiary'
-             onClick={ handlerClick }>
-             <div className='diaryimg'><img src={ image } /></div>
+        <div className='eachdiary' >
+            <div className='diaryimg'><img src={ image } /></div>
             <div className='diarydate'>{ list.createdDt }</div>
         </ div>
-        // <div className='eachdiary'>
-        //     <div className='diaryimg'>
-        //         <img src={sampleimage} />
-        //     </div>
-        //     <div className='diarydate'>2023.02.14</div>
-        // </ div>
+        
     );
 }
 

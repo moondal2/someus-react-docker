@@ -5,7 +5,8 @@ import GroupShareEach from "./GroupShareEach";
 
 
 
-const GroupShareList = ({ name }) => {
+
+const GroupShareList = ({ history }) => {
    
     const [ list, setList ] = useState([]); 
     
@@ -23,7 +24,7 @@ const GroupShareList = ({ name }) => {
 
     return (
         <>
-            <NaviDiary name={ name }/>
+            <NaviDiary history={history}/>
             
             <div>
                 { list.map((list, index) => <GroupShareEach key={ index } list={ list } />) }

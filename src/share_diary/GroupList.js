@@ -37,7 +37,7 @@ const GroupList = ({ name, history }) => {
 
     return (
         <>
-            <NaviDiary />
+            <NaviDiary history={history}/>
             <div className="groupList_background">
                 <div className="grouplist_box">
                     <input type="button"

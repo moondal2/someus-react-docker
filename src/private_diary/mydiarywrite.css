@@ -4,6 +4,7 @@
     font-weight: normal;
     font-style: normal;
 }
+
 * {
     box-sizing: border-box;
 }
@@ -31,7 +32,7 @@
     margin-left: auto;
     margin-right: auto;
     padding: 100px 0;
-    
+
 }
 
 .container h1 {
@@ -42,10 +43,12 @@ form {
     width: 100%;
     display: inline-block;
 }
+
 /* 날씨, 기분 선택 */
 .writeheader {
     width: 100%;
 }
+
 .writeheader .weather-container,
 .writeheader .mood-container {
     width: 49.5%;
@@ -56,6 +59,7 @@ form {
     font-size: 15px;
     box-sizing: border-box;
 }
+
 .writeheader .mood-container {
     float: right;
 }
@@ -92,7 +96,7 @@ form {
 /* placeholder 값 설정 */
 .writebody textarea::placeholder {
     font-size: 15px;
-    color:white;
+    color: white;
 }
 
 .writefooter {
@@ -117,7 +121,7 @@ form {
     font-family: 'BMDOHYEON';
     margin-left: 10px;
     font-size: 15px;
-    height: 40px;  
+    height: 40px;
 }
 
 
