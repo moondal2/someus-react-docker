@@ -7,14 +7,21 @@
 
 .react-datepicker {
   font-size: 13px !important;
-  margin-left: 50px !important;
+  /* margin-left: 50px !important; */
   background-color: rgba(255, 255, 255, 0.9);
 }
 
 .react-datepicker__current-month {
   font-size: 15px !important; 
+  
 }
 
+/* 화면에 따라 달력 가리기 */
+.react-datepicker__month-container  {
+  width: 100% !important;
+  overflow-x: hidden !important;
+  margin-bottom: 10px;
+}
 /* 달력 헤더(월, 년도 뜨는 부분) */
 .react-datepicker__header {
   padding-top: 15px !important; 
@@ -46,13 +53,12 @@
 
 .react-datepicker,
 .react-datepicker__header  {
-  width: 300px;
+  width: 100%;
 }
 
 /* today 버튼 */
 .react-datepicker__today-button {
   width: 70px !important;
-  height: 20px !important;
   vertical-align: middle !important;
   line-height: 20px !important;
   background-color: white;
@@ -60,10 +66,10 @@
   border-radius: 3px !important;
   margin-left: auto !important;
   margin-right: auto !important;
-  margin-bottom: 10px !important;
+  margin-bottom: 20px !important;
+  margin-top: 50px !important;
   text-align: center;
   font-family: 'BMDOHYEON';
-  
 }
 
 .react-datepicker__current-month {
@@ -80,12 +86,18 @@
   margin-left: 2px !important;
 }
 
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  height: 1.7rem;
+}
 .react-datepicker__day--selected {
   border: 2px solid black !important;
   background: none !important;
   border-radius: 50% !important;
   font-weight: bold !important;
   color: black !important;
+  box-sizing: border-box !important;
 }
 
 .react-datepicker__day--today {
@@ -100,3 +112,4 @@
 react-datepicker__today-button {
   margin-left: 50px !important;
 }
+

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import NavigationLogin from "../navigation/NavigationLogin";
+import NaviDiary from "../navigation/NaviDiary";
 import GroupShareEach from "./GroupShareEach";
 
 
@@ -23,9 +23,9 @@ const GroupShareList = ({ name }) => {
 
     return (
         <>
-            <NavigationLogin name={ name }/>
+            <NaviDiary name={ name }/>
             
-            <div style={ { width: '300px', float: 'left'} }>
+            <div>
                 { list.map((list, index) => <GroupShareEach key={ index } list={ list } />) }
             </div>
         </>

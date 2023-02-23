@@ -8,6 +8,7 @@ const MyDiaryDetail = ({ match, history }) => {
     const [ weather, setWeather ] = useState('');
     const [ mood, setMood ] = useState('');
     const [ contents, setContents ] = useState('');
+    const image = `http://localhost:8080/api/getImage/` + diary.diaryImg;
 
     const { diaryId } = match.params;
 
@@ -30,7 +31,7 @@ const MyDiaryDetail = ({ match, history }) => {
     const hanlderChangeContents = (e) => {
         setContents(e.target.value);
         console.log(contents);
-    }
+    };
 
     const handlerOnClickUpdate = () => {
         axios.put(`http://localhost:8080/api/someus/private/${diaryId}`,
@@ -68,25 +69,26 @@ const MyDiaryDetail = ({ match, history }) => {
             .catch((error) => {
                 console.log(error);
                 alert(`삭제에 실패했습니다.`);
-                    return;
+                return;
             })
     };
     
     return (
     <>
-        <div style={ { border: '1px solid black', float: 'left', width: '800px'} }>
-            <div style={ { border: '1px solid black', width:'300px', float:'left', marginLeft: '200px', marginRight: '200px'} }>
+        <div>
+            <div>
                 <div>
                     <img src="" />
                 </div>
                 <div>
-                    <p>{ diary.createdDt}</p>
-                    <p>{ diary.moodImg }</p>
-                    <p>{ diary.weatherImg }</p>
+                    <p>{ diary.createdDt }</p>
+                    <img src={image} />
+                    {/* <img src={diary.diaryImg} /> */}
+                    <p>{ diary.moodId }</p>
+                    <p>{ diary.weatherId }</p>
                     <input type='text'
-                            value={ diary.diaryContents }
+                            value={ diary.diaryContent }
                             onChange={ hanlderChangeContents } />
-
                     <input type="button" 
                             value="연필"
                             onClick={ handlerOnClickUpdate } />

@@ -15,6 +15,9 @@ const GroupDiaryWrite = ({ history, name }) => {
     const [ imgBase, setImgBase ] = useState([1]);
     const [ imgFile, setImgFile ] = useState([]);
     const [ contents, setContents ] = useState('');
+    const [ username, setUsername ] = useState('');
+    const [ userId, setUserId ] = useState('');
+
 
 
     useEffect(() => {
@@ -27,6 +30,8 @@ const GroupDiaryWrite = ({ history, name }) => {
             .then((response) => {
                 setWeather(response.data.weatherList);
                 setMood(response.data.moodList);
+                setUsername(decode_token.name);
+                setUserId(decode_token.sub);
             })
             .catch((error) => {
                 console.log(error);
@@ -41,9 +46,9 @@ const GroupDiaryWrite = ({ history, name }) => {
             result.push(
                 <>
                     <p>{weather[i].weatherId}</p>
-                    <img src={weather[i].weatherImg} 
+                    {/* <img src={weather[i].weatherImg} 
                         className={"btn" + (weather[i].weatherId == weatherActive ? " active" : "")}
-                        onClick={toggleWeatherActive}/>
+                        onClick={toggleWeatherActive}/> */}
                 </>
                 );
         return result;
@@ -58,9 +63,9 @@ const GroupDiaryWrite = ({ history, name }) => {
             result.push(
                 <>
                     <p>{mood[i].moodId}</p>
-                    <img src={mood[i].moodImg} 
+                    {/* <img src={mood[i].moodImg} 
                         className={"btn" + (mood[i].moodId == moodActive ? " active" : "")}
-                        onClick={toggleMoodActive} />
+                        onClick={toggleMoodActive} /> */}
                 </>
                 );
         return result;
@@ -130,7 +135,7 @@ const GroupDiaryWrite = ({ history, name }) => {
           };
         };
 
-    const diarySet = {
+    const diaryDto = {
         weather_id: 'weatherActive',
         mood_id: 'moodActive',
         diary_content: 'contents'
@@ -138,9 +143,9 @@ const GroupDiaryWrite = ({ history, name }) => {
 
     formData.append(
         "data",
-        new Blob([JSON.stringify(diarySet)], { type: "application/json" })
+        new Blob([JSON.stringify(diaryDto)], { type: "application/json" })
         );
-        Object.values(imgFile).forEach((file) => formData.append("diary_img", file));
+        Object.values(imgFile).forEach((file) => formData.append("files", file));
     
 
     const onSubmit = (e) => {
@@ -169,7 +174,7 @@ const GroupDiaryWrite = ({ history, name }) => {
     
     return (
         <>
-            <NavigationDiary name={ name }/>
+            <NavigationDiary/>
             <h1>오늘의 일기</h1>
             <form onSubmit={ onSubmit }>
                 <div>

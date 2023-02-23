@@ -1,30 +1,59 @@
 import axios from "axios";
-import { useState, useRef } from "react";
-import NaviDiary from "../navigation/NaviDiary";
+import jwt_decode from "jwt-decode";
+import { useState, useRef, useEffect } from "react";
+import './addgroup.css';
+import AddGroupNext from "./AddGroupNext";
 
+const AddGroup = (props, { history }) => {
+    //AddGroupNext모달 값
+    const [modalState, setModalState] = useState(false);
 
+    const closeModal = () => {
+        setModalState(false);
+      };
 
-const AddGroup = ({ history, name }) => {
+    //모달 창
+    useEffect(() => {
+        document.body.style.cssText = `
+        position: fixed;
+        top: -${window.scrollY}px;
+        overflow-y: scroll;
+        width: 100%;`;
+
+        return () => {
+            const scrollY = document.body.style.top;
+            document.body.style.cssText = '';
+            window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+        };
+    }, []);
+
+    const modalClose = () => {
+        props.closeModal();
+        console.log(props.closeModal());
+    }
 
     const [ shareRoomName, setShareRoomName ] = useState('');
-    const [ memberId, setMemberId ] = useState('');
+    const [ memberName, setMemberName ] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();
+        const token = sessionStorage.getItem('token');
+        const decode_token = jwt_decode(token);
 
         axios.post(`http://localhost:8080/api/someus/addgroup`,
             { "share_room_name": shareRoomName,
-              "member_id": memberId },
+              "member_id": decode_token.sub },
               { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}}
             )
             .then((response) => {
                 console.log(response);
-                alert(`정상적으로 등록되었습니다.`);
-                history.push(`/someus/grouplist`)
+                alert(`${shareRoomName} 정상적으로 등록되었습니다.`);
+                history.push(`/someus/groupnext`)
             })
             .catch((error) => {
                 alert(`등록에 실패했습니다.`);
                 console.log(error);
+                return;
             })
     };
 
@@ -32,29 +61,31 @@ const AddGroup = ({ history, name }) => {
         setShareRoomName(e.target.value);
     };
 
-    const handlerChangeMemberId = (e) => {
-        setMemberId(e.target.value);
-    };
-
     return (
         <>
-        <NaviDiary name={ name }/>
-            <div style={ { marginLeft: '10px'} }>
-                <form onSubmit={ onSubmit }>
-                    <input style={ { width: '300px', height: '40px'} }
-                            type="text" 
-                            value={ shareRoomName }
-                            onChange={ handlerChangeRoomName }
-                            placeholder='교환 일기의 이름을 정해 주세요.' />
-                    <hr />
-                    <input style={ { width: '300px', height: '40px'} }
-                            type="text"
-                            value={ memberId }
-                            onChange={ handlerChangeMemberId }
-                            placeholder='함께할 친구의 아이디를 입력해 주세요.' />
-                    <hr />
-                    <input type="submit" value="등록" />
-                </form>
+            <div className="modal" onClick={modalClose}>
+                <div className="modalBody" onClick={(e) => e.stopPropagation()}>
+                    <div className="addgroup_background" >
+                        <div className="addgroup_box">
+                            <div className="addgroup_con">
+                                <div className="groupdiary"></div>
+                                <form onSubmit={onSubmit}>
+
+                                    <div className="grouptitle">
+                                        <span className="grouptitleimg"></span>
+                                        <input type="text"
+                                            value={shareRoomName}
+                                            onChange={handlerChangeRoomName}
+                                            placeholder='교환 일기의 이름을 정해 주세요.'>
+                                        </input>
+                                    </div>
+                                    <button type="submit">짝꿍 등록하기</button>
+                                    {modalState && <AddGroupNext closeModal={closeModal} />}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     );

@@ -10,6 +10,7 @@ const GroupShareDetailEach = ({ match, history }) => {
     const [ weather, setWeather ] = useState('');
     const [ mood, setMood ] = useState('');
     const [ contents, setContents ] = useState('');
+    const image = `http://localhost:8080/api/getImage/` + diary.diaryImg;
 
     useEffect(() => {
         axios.get(`http://localhost:8080/api/someus/share/${shareroomId}/${createdDt}`,
@@ -64,16 +65,17 @@ const GroupShareDetailEach = ({ match, history }) => {
     
     return (
     <>
-        <div style={ { border: '1px solid black', float: 'left', width: '800px'} }>
-            <div style={ { border: '1px solid black', width:'300px', float:'left', marginLeft: '200px', marginRight: '200px'} }>
+        <div>
+            <div>
                 <div>
                     <img src="" />
                 </div>
                 <div>
                     <p>{ diary.createdDt}</p>
+                    <img src={image} />
                     <p>{ diary.weatherId }</p>
                     <p>{ diary.moodId }</p>
-                    <p>{ diary.diaryContents }</p>
+                    <p>{ diary.diaryContent }</p>
                     <input type="button" 
                             value="연필"
                             onClick={ handlerOnClickUpdate } />

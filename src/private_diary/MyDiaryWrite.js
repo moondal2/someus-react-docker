@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useState, useEffect } from "react";
-import NavigationDiary from "../navigation/NaviDiary";
+import NaviDiary from "../navigation/NaviDiary";
 import './mydiarywrite.css'
 
 
@@ -17,12 +17,13 @@ const MyDiaryWrite = ({ history, name }) => {
     const [ imgBase, setImgBase ] = useState([1]);
     const [ imgFile, setImgFile ] = useState([]);
     const [ contents, setContents ] = useState('');
+    const [ username, setUsername ] = useState('');
+    const [ userId, setUserId ] = useState('');
 
     // 화면이 로드될 때 get 방식을 사용해 weather 버튼과 mood 버튼 출력
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         const decode_token = jwt_decode(token);
-        console.log(decode_token);
         
         axios.get(`http://localhost:8080/api/someus/private/write`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
@@ -32,6 +33,8 @@ const MyDiaryWrite = ({ history, name }) => {
                 console.log(response.data.moodList);
                 setWeather(response.data.weatherList);
                 setMood(response.data.moodList);
+                setUsername(decode_token.name);
+                setUserId(decode_token.sub);
             })
             .catch((error) => {
                 console.log(error);
@@ -45,9 +48,10 @@ const MyDiaryWrite = ({ history, name }) => {
         for( let i=0; i<weather.length; i++) {
             result.push(
                 <>
-                    <img src={weather[i].weatherImg} 
+                <p>{weather[i].weatherId}</p>
+                    {/* <img src={weather[i].weatherImg} 
                         className={"btn" + (weather[i].weatherId == weatherActive ? " active" : "")}
-                        onClick={toggleWeatherActive}/>
+                        onClick={toggleWeatherActive}/> */}
                 </>
                 );
         
@@ -57,13 +61,13 @@ const MyDiaryWrite = ({ history, name }) => {
     // 기분 버튼 출력
     const moodList = () => {
         const result=[];
-        console.log(mood.length);
         for( let i=0; i<mood.length; i++) {
             result.push(
                 <>
-                    <img src={mood[i].moodImg} 
+                <p>{mood[i].moodId}</p>
+                    {/* <img src={mood[i].moodImg} 
                         className={"btn" + (mood[i].moodId == moodActive ? " active" : "")}
-                        onClick={toggleMoodActive} />
+                        onClick={toggleMoodActive} /> */}
                 </>
                 );
         
@@ -134,17 +138,21 @@ const MyDiaryWrite = ({ history, name }) => {
         };
     };
 
-    const diarySet = {
-        weather_id: 'weatherActive',
-        mood_id: 'moodActive',
-        diary_content: 'contents'
+    const diaryDto = {
+        // weatherId: 'weatherActive',
+        // moodId: 'moodActive',
+        // diaryId,
+        weatherId: '1',
+        moodId: '1',
+        diaryContent: contents,
+        memberId: userId
     };
 
     formData.append(
         "data",
-        new Blob([JSON.stringify(diarySet)], { type: "application/json" })
+        new Blob([JSON.stringify(diaryDto)], { type: "application/json" })
     );
-    Object.values(imgFile).forEach((file) => formData.append("diary_img", file));
+    Object.values(imgFile).forEach((file) => formData.append("files", file));
 
 
     const onSubmit = (e) => {
@@ -174,7 +182,7 @@ const MyDiaryWrite = ({ history, name }) => {
     return (
         <>
             <div className='background' style={{ backgroundImage: `url('../img/bg_myWrite.png')` }}>
-                <NavigationDiary name={ name }/>
+                <NaviDiary/>
                 <div className='container'>
                     <h1>오늘의 일기</h1>
                     <form onSubmit={ onSubmit }>

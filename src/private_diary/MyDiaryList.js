@@ -10,29 +10,30 @@ import NaviDiary from "../navigation/NaviDiary";
 import '../navigation/navi.css';
 import './mydiarylist.css';
 import jwt_decode from "jwt-decode";
+import TodoList from "./TodoList";
 
 
-const MyDiaryList = ({ match, history, name }) => {
+const MyDiaryList = ({ match, history }) => {
 
     const [ list, setList ] = useState([]);
     const [ startDate, setStartDate ] = useState(new Date());
     const { diaryId } = match.params;
-    const [ userId, setUserId ] = useState('');
-    const [ userName, setUserName ] = useState('');
+    const [ memberId, setMemberId ] = useState('');
+    const [ memberName, setMemberName ] = useState('');
 
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         const decode_token = jwt_decode(token);
-        console.log(decode_token);
-        
-        axios.get(`http://localhost:8080/api/someus/private`,
+        setMemberId(decode_token.sub);
+        setMemberName(decode_token.name);
+
+        let memberId = decode_token.sub;
+
+        axios.get(`http://localhost:8080/api/someus/private/page/${memberId}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
-                console.log(response);
-                setList(response.data.list);
-                setUserId(response.data.list.userId);
-                setUserName(response.data.list.userName);
+                setList(response.data.diaryList);
             })
             .catch((error) => {
                 console.log(error);
@@ -71,7 +72,7 @@ const MyDiaryList = ({ match, history, name }) => {
             .then((response) => {
                 console.log(response);
                 setStartDate(date);
-
+                { console.log(response.data.list)}
                 // 해당하는 날짜에 대한 일기의 데이터가 없을 경우
                 if (response.data.list === null) {
                     alert(`일기를 작성하지 않았어요.`);
@@ -89,7 +90,7 @@ const MyDiaryList = ({ match, history, name }) => {
     return (
         <>
         <div style={{ border: '3px solid red' }}>
-            <NaviDiary name={name} />
+            <NaviDiary />
             <div className='background'
                 style={{ backgroundImage: `url('../img/bg_mylist.png')`}} >
                  {/* <img src={backimg} style={ { backgroundAttachment: 'fixed'}}/> */}
@@ -112,10 +113,13 @@ const MyDiaryList = ({ match, history, name }) => {
                                 todayButton="today"
                             />
                         </div>
+                        <div className="todo-box">
+                                <TodoList />
+                        </div>
                     </div>
                     <div className='diary-container'>
                         <div>
-                            <p>{name}의 일기</p>
+                            <p>{ memberName }의 일기</p>
                             <p className='date'>{startDate.getMonth() + 1} {startDate.toLocaleString("en-US", { month: "long" })}</p>
                         </div>
                         
@@ -134,20 +138,11 @@ const MyDiaryList = ({ match, history, name }) => {
                             value='일기 쓰기'
                             onClick={handlerClickWrite} /> */}
                         <div className='diary'>
-                            {/* <div style={{ width: '300px', float: 'left' }}>
+                            <div style={{ width: '300px', float: 'left' }}>
                             {list.map((list, index) => <MyDiaryEach key={index} list={list} />)}
-                        </div> */}
+                        </div>
                             {/* 하드코딩 테스트용 */}
-                            <MyDiaryEach />
-                            <MyDiaryEach />
-                            <MyDiaryEach />
-                            <MyDiaryEach />
-                            <MyDiaryEach />
-                            <MyDiaryEach />
-                            <MyDiaryEach />
-                            <MyDiaryEach />
-                            
-
+                           
                         </div>
                     </div>
                 </div>

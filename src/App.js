@@ -9,24 +9,28 @@ import Regist from './regist/Regist.js'
 import Loginpage from './login/Loginpage';
 import GroupDiaryWrite from './share_diary/GroupDiaryWrite'
 import MyDiaryDetail from './private_diary/MyDiaryDetail';
+import Main from './main/Main';
+import MainHowTo from './main/MainHowTo';
 
 function App() {
 
-  let name = "김초원";
-
   return (
     <>
-      <Route path='/someus/share/grouplist' component={ (props) => <GroupList {...props} name={ name } /> } exact={true} />
-      <Route path='/someus/share/write' component={ (props) => <GroupDiaryWrite {...props} name={ name } /> } exact={true} />
-      <Route path='/someus/share/:shareroomId/:createdDt' component={ (props) => <ShareDiaryDetail {...props} name={ name } /> } exact={true} />
-      <Route path='/someus/share/groupsharelist' component={ (props) => <GroupShareList {...props} name={ name } /> } exact={true} />
-      <Route path='/someus/addgroup' component={ (props) => <AddGroup {...props} name={ name } /> } exact={true} />
+      <Route path='/someus/mainpage' component={ (props) => <Main {...props} /> } exact={true} />
+      <Route path='/someus/howto' component={ (props) => <MainHowTo {...props}  /> } exact={true} />
+      
+      
+      <Route path='/someus/share/grouplist' component={ (props) => <GroupList {...props} /> } exact={true} />
+      <Route path='/someus/share/write' component={ (props) => <GroupDiaryWrite {...props}  /> } exact={true} />
+      <Route path='/someus/share/:shareroomId/:createdDt' component={ (props) => <ShareDiaryDetail {...props}  /> } exact={true} />
+      <Route path='/someus/share/groupsharelist' component={ (props) => <GroupShareList {...props}  /> } exact={true} />
+      <Route path='/someus/addgroup' component={ (props) => <AddGroup {...props}  /> } exact={true} />
       
 
-      <Route path='/someus/private' component={(props) => <MyDiaryList {...props} name={name} />} exact={true} />
-      <Route path='/someus/private/write' component={ (props) => <MyDiaryWrite {...props} name={ name } /> } exact={true} />
-      <Route path='/someus/private/:diaryId' component={ (props) => <MyDiaryDetail {...props} name={ name } /> } exact={true} />
-      {/* <Route path='/someus/private' component={MyDiaryList} exact={true} /> */}
+      <Route path='/someus/private' component={(props) => <MyDiaryList {...props}  />} exact={true} />
+      <Route path='/someus/private/write' component={ (props) => <MyDiaryWrite {...props}  /> } exact={true} />
+      <Route path='/someus/private/detail/:diaryId' component={ (props) => <MyDiaryDetail {...props}  /> } exact={true} />
+      
 
       <Route path="/someus/regist" component={Regist} exact={true} />
       <Route path="/login" component={Loginpage} exact={true} />
