@@ -39,6 +39,7 @@ const NaviDiary = (props) => {
    
     return (
             <>
+            <div id='header'>
             <div className= 'menu'>
                 <input type="image" 
                         className= 'home'
@@ -55,6 +56,7 @@ const NaviDiary = (props) => {
                             value="로그아웃"
                             onClick={ handlerClickLogout }><img src={logout} /></button>
                 </div>
+            </div>
             </div>
         </>
     );

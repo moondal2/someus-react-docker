@@ -2,13 +2,14 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useState, useRef, useEffect } from "react";
 import NaviDiary from "../navigation/NaviDiary";
+import './groupdiarywrite.css';
 
-const GroupDiaryWrite = ({ history }) => {
+const GroupDiaryWrite = ({ history, match }) => {
 
     const [weather, setWeather] = useState([]);
     const [mood, setMood] = useState([]);
-    const [weatherActive, setWeatherActive] = useState('');
-    const [moodActive, setMoodActive] = useState('');
+    const [weatherActive, setWeatherActive] = useState(1);
+    const [moodActive, setMoodActive] = useState(1);
     const [imgBase64, setImgBase64] = useState([]);
     const [imgBase, setImgBase] = useState([1]);
     const [imgFile, setImgFile] = useState([]);
@@ -16,17 +17,20 @@ const GroupDiaryWrite = ({ history }) => {
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
 
+    const { shareroomid } = match.params;
+
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         const decode_token = jwt_decode(token);
 
-        axios.get(`http://localhost:8080/api/someus/share/write`,
+        axios.get(`http://localhost:8080/api/someus/share/${shareroomid}/write`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
                 setWeather(response.data.weatherList);
                 setMood(response.data.moodList);
                 setUsername(decode_token.name);
                 setUserId(decode_token.sub);
+                console.log(shareroomid);
             })
             .catch((error) => {
                 console.log(error);
@@ -129,10 +133,11 @@ const GroupDiaryWrite = ({ history }) => {
     };
 
     const diaryDto = {
-        weatherId: 'weatherActive',
-        moodId: 'moodActive',
+        weatherId: weatherActive,
+        moodId: moodActive,
         diaryContent: contents,
-        memberId: userId
+        memberId: userId,
+        shareRoomId: shareroomid
     };
 
     formData.append(
@@ -147,7 +152,7 @@ const GroupDiaryWrite = ({ history }) => {
 
         axios({
             method: 'post',
-            url: `http://localhost:8080/api/someus/share/write`,
+            url: `http://localhost:8080/api/someus/share/${shareroomid}/write`,
             data: formData,
             headers: {
                 "Content-Type": `multipart/form-data; `,
@@ -158,7 +163,7 @@ const GroupDiaryWrite = ({ history }) => {
                 console.log(response);
                 if (response.data.count === 1) {
                     alert(`정상적으로 등록되었습니다.`);
-                    history.push('/someus/sharelist');
+                    history.push(`/someus/share/groupsharelist/${shareroomid}`);
                 };
             })
             .catch(error => {
@@ -169,34 +174,37 @@ const GroupDiaryWrite = ({ history }) => {
     return (
         <>
             <NaviDiary history={history} />
-            <h1>오늘의 일기</h1>
-            <form onSubmit={onSubmit}>
-                <div>
-                    <div className='writeheader'>
-                        <div className='weather-container'>
-                            <p>오늘의 날씨</p>
-                            {weatherList()}
-                        </div>
-                        <div className='mood-container'>
-                            <p>오늘의 기분은?</p>
-                            {moodList()}
-                        </div>
-                    </div>
+            <div className='groupWrite_background'>
+                <div className='groupWrite_container'>
+                    <h1>오늘의 일기</h1>
+                    <form onSubmit={onSubmit}>
+                        <div>
+                            <div className='writeheader0'>
+                                <div className='weather-container0'>
+                                    <p>오늘의 날씨</p>
+                                    {weatherList()}
+                                </div>
+                                <div className='mood-container0'>
+                                    <p>오늘의 기분은?</p>
+                                    {moodList()}
+                                </div>
+                            </div>
 
-                    <div className='writebody'>
-                        <textarea placeholder="오늘의 하루를 입력해 주세요."
-                            value={contents}
-                            onChange={handlerOnChangeContents}></textarea>
-                    </div>
+                            <textarea className='writebody_box'
+                                placeholder="오늘의 하루를 입력해 주세요."
+                                value={contents}
+                                onChange={handlerOnChangeContents}></textarea>
 
-                    <div className='writefooter'>
-                        <div className='fileBox'>
-                            <input type='file' id='file' onChange={handleChangeFile} />
+                            <div className='writefooter0'>
+                                {/* <div className='fileBox0'> */}
+                                <input className='fileBox0' type='file' id='file' onChange={handleChangeFile} />
+                                {/* </div> */}
+                            </div>
+                            <input className='submit0' type='submit' value='제출' />
                         </div>
-                        <input type='submit' value='제출' />
-                    </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </>
     );
 

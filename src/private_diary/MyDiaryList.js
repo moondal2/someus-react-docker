@@ -52,9 +52,6 @@ const MyDiaryList = ({ match, history }) => {
                         return updateModalArray;
                     });
                 }
-                console.log(modalState);
-                console.log(memberId);
-                console.log(list);
             })
             .catch((error) => {
                 console.log(error);
@@ -124,9 +121,6 @@ const MyDiaryList = ({ match, history }) => {
     };
 
     const result = () => {
-        console.log(">>>>>>>>>>>>>>>>")
-        console.log(list);
-
         return list && list.map((lst, index) => {
             return (
             <div key={index} id={lst.diaryId}>           
@@ -173,7 +167,7 @@ const MyDiaryList = ({ match, history }) => {
                         <div className='diary-container'>
                             <div>
                                 <p className="name_diary">{ memberName }의 일기</p>
-                                <p className='date'>{startDate.getMonth() + 1} {startDate.toLocaleString("en-US", { month: "long" })}</p>
+                                <p className='date'>{selectedDate.getMonth() + 1} {selectedDate.toLocaleString("en-US", { month: "long" })}</p>
                             </div>
 
                             <button className='write' onClick={handlerClickWrite}>
