@@ -18,7 +18,7 @@ const MyPage = ({ history }) => {
 
     return (
         <>
-        <NaviDiary />
+        <NaviDiary history={history}/>
             <div className="mypageBackground">
                 <div className="mypage">
                     <button className="myD"

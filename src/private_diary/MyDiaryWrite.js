@@ -9,7 +9,7 @@ const MyDiaryWrite = ({ history }) => {
     const [weather, setWeather] = useState([]);
     const [mood, setMood] = useState([]);
     const [weatherActive, setWeatherActive] = useState(1);
-    const [moodActive, setMoodActive] = useState('');
+    const [moodActive, setMoodActive] = useState(1);
     const [imgBase64, setImgBase64] = useState([]);
     const [imgBase, setImgBase] = useState([1]);
     const [imgFile, setImgFile] = useState([]);
@@ -133,8 +133,8 @@ const MyDiaryWrite = ({ history }) => {
     };
 
     const diaryDto = {
-        weatherId: 'weatherActive',
-        moodId: 'moodActive',
+        weatherId: weatherActive,
+        moodId: moodActive,
         diaryContent: contents,
         memberId: userId
     };

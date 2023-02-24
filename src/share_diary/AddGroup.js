@@ -33,8 +33,7 @@ const AddGroup = (props, { history }) => {
     const modalClose = () => {
         props.closeModal();
         console.log(props.closeModal());
-    }
-
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();

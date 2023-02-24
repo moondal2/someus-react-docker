@@ -42,6 +42,7 @@ const MyDiaryList = ({ match, history }) => {
         axios.get(`http://localhost:8080/api/someus/private/page/${memberId}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
+                console.log(response);
                 setList(response.data.diaryList);
                 
                 for (let i = 0; i < list.length; i++){
@@ -82,8 +83,6 @@ const MyDiaryList = ({ match, history }) => {
         history.push(`/someus/private/write`)
     };
 
-    
-
     const formatDate = (date) => {
         if (!date) return '';
         const year = date.getFullYear();
@@ -95,12 +94,12 @@ const MyDiaryList = ({ match, history }) => {
     // 날짜 변경 시 해당 날짜를 기준으로 목록이 리랜더링
     const handlerChangeDate = (date) => {
         setSelectedDate(date)
-        console.log(formatDate(selectedDate))
-        const createdDt = formatDate(selectedDate);
+        console.log(formatDate(date))
+        const createdDt = formatDate(date);
         axios.get(`http://localhost:8080/api/someus/private/page/${memberId}/${createdDt}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
-                console.log(response.data);
+                console.log(response);
                 // 해당하는 날짜에 대한 일기의 데이터가 없을 경우
                 if (list === null) {
                     alert(`일기를 작성하지 않았어요.`);
@@ -125,17 +124,20 @@ const MyDiaryList = ({ match, history }) => {
     };
 
     const result = () => {
-        return list && list.map((list, index) => {
-          return (
-            <div key={index} id={list.diaryId}>           
-              {modalState[index] && <Modal_Mydiary match={match} closeModal={()=>closeModal(index)} id={list.diaryId} list={list}/>}
-              <button className="diaryeachbutton" type="button" value={list.diaryId} onClick={() => handlerClickDetail(index)}>
-                <MyDiaryEach list={list} />
+        console.log(">>>>>>>>>>>>>>>>")
+        console.log(list);
+
+        return list && list.map((lst, index) => {
+            return (
+            <div key={index} id={lst.diaryId}>           
+              {modalState[index] && <Modal_Mydiary match={match} closeModal={()=>closeModal(index)} id={lst.diaryId} list={lst}/>}
+              <button className="diaryeachbutton" type="button" value={lst.diaryId} onClick={() => handlerClickDetail(index)}>
+                <MyDiaryEach list={lst} />
               </button>
             </div>
-          );
+            );
         });
-      };
+    };
 
     return (
         <>
