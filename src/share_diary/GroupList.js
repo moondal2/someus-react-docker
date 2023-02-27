@@ -60,6 +60,7 @@ const GroupList = ({ name, history, match }) => {
 
     const handlerSubmit = () => {
         setModalState(false);
+        history.push(`/someus/share/grouplist`);
     }
 
     const onClickPlus = () => {

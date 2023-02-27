@@ -13,20 +13,26 @@ import jwt_decode from "jwt-decode";
 
 const GroupShareList = ({ history, name, match }) => {
     // 모달
-    const [modalState, setModalState] = useState(false);
+    const [modalState, setModalState] = useState([]);
     const { shareroomid } = match.params;
 
-    const closeModal = () => {
-        setModalState(false);
+    const closeModal = (index) => {
+        setModalState(prevState => {
+            const updateArray = [...prevState];
+            updateArray[index] = false;
+            return updateArray;
+        });
     };
-    
-    const [ list, setList ] = useState([]);
-    const [ startDate, setStartDate ] = useState(new Date());
+
+    const [list, setList] = useState([]);
+    const [allList, setAllList] = useState([]);
+    const [memberList, setMemberList] = useState([]);//교환일기 멤버 목록 조회로 인한 변수 추가
+    const [startDate, setStartDate] = useState(new Date());
     const { shareRoomId } = match.params;
     const { write } = match.params;
-    const [ memberId, setMemberId ] = useState('');
-    const [ memberName, setMemberName ] = useState('');
-    const [ selectedDate, setSelectedDate ] = useState('');
+    const [memberId, setMemberId] = useState('');
+    const [memberName, setMemberName] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
@@ -39,10 +45,45 @@ const GroupShareList = ({ history, name, match }) => {
         axios.get(`http://localhost:8080/api/someus/shareroom/${shareroomid}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
-                console.log(response.data);
-                setList(response.data);
-                
-                for (let i = 0; i < list.length; i++){
+                setList(() => {
+                    const updateArray = response.data;
+                    //createdDt 글자 앞 10글자로 변경
+                    const updateArray2 = updateArray.map(item => ({
+                        ...item, createdDt: item.createdDt.slice(0, 10)
+                    }));
+
+                    //같은 날짜인 데이터가 있다면 줄여야함. 줄이기 전에 0과 1로 중복 날짜 구분 표시.
+                    for (let i = 0; i < updateArray2.length; i++) {
+                        if (i !== updateArray2.length - 1 && updateArray2[i].createdDt == updateArray2[i + 1].createdDt) {
+                            updateArray2[i] = { ...updateArray2[i], number: 0 };
+                            updateArray2[i + 1] = { ...updateArray2[i + 1], number: 1 };
+                            i++;
+                        } else {
+                            updateArray2[i] = { ...updateArray2[i], number: 0 };
+                        }
+                    };
+
+                    //중복날짜 포함 일기 리스트
+                    setAllList(updateArray2);
+
+                    //number가 0인 것만 추출
+                    const updateArray3 = updateArray2.filter((data) => data.number === 0);
+
+                    for (let i = 0; i < updateArray3.length; i++) {
+                        for (let j = 0; j < updateArray2.length; j++) {
+                            if (updateArray3[i].createdDt === updateArray2[j].createdDt) {
+                                updateArray3[i] = { ...updateArray3[i], number: updateArray2[j].number };
+                            } else {
+                            }
+                        };
+                    };
+
+
+                    return updateArray3;
+                });
+
+                //현재 list로 모달에 뿌리는데 개수 조정 필요. 왜냐? 같은 날짜인 데이터는 뺴야하니까
+                for (let i = 0; i < list.length; i++) {
                     setModalState(prevState => {
                         const updateModalArray = [...prevState];
                         updateModalArray[i] = false;
@@ -54,7 +95,25 @@ const GroupShareList = ({ history, name, match }) => {
                 console.log(error);
                 return;
             })
+        //교환일기 멤버 목록 조회로 인한 GET 서버 요청 추가
+        axios.get(`http://localhost:8080/api/someus/shareroom/member/${shareroomid}`,
+            { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
+            .then((response) => {
+                console.log(response.data);
+                setMemberList(response.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+                return;
+            })
+
     }, []);
+
+    //중복 제거된 리스트
+    console.log("중복 날짜 제거 list=", list);
+    console.log("중복 날짜 포함 list=", allList);
+
     // 요일의 이름 반환
     const getDayName = (date) => {
         return date.toLocaleDateString('ko-KR', {
@@ -82,7 +141,7 @@ const GroupShareList = ({ history, name, match }) => {
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
         const day = ('0' + date.getDate()).slice(-2);
         return `${year}-${month}-${day}`;
-      };
+    };
 
 
     // 날짜 변경 시 해당 날짜를 기준으로 목록이 리랜더링
@@ -109,49 +168,62 @@ const GroupShareList = ({ history, name, match }) => {
     };
 
     const handlerClickDetail = (index) => {
-        setModalState(prevState =>{
+        setModalState(prevState => {
             const updateArray = [...prevState];
             updateArray[index] = true;
             return updateArray;
-        });       
+        });
     };
 
 
     const result = () => {
-       return list && list.map((lst, index) => {
+        return list && list.map((lst, index) => {
             return (
-            <div key={index} id={lst.diaryId}>           
-              {modalState[index] && <Modal match={match} closeModal={()=>closeModal(index)} id={lst.diaryId} list={lst}/>}
-              <button className="diaryeachbutton" type="button" value={lst.diaryId} onClick={() => handlerClickDetail(index)}>
-                <GroupShareListEach list={lst} />
-              </button>
-            </div>
+                <div key={index} id={lst.diaryId}>
+                    {modalState[index] && <Modal match={match} closeModal={() => closeModal(index)} id={lst.diaryId} list={lst} allList={allList}/>}
+                    <button className="diaryeachbutton" type="button" value={lst.diaryId} onClick={() => handlerClickDetail(index)}>
+                        <GroupShareListEach list={lst} />
+                    </button>
+                </div>
             );
         });
     };
 
     return (
         <>
-            <NaviDiary history={ history } />
+            <NaviDiary history={history} />
             <div className='groupshare_background'>
                 <div className='body1' >
                     <div className="groupcalendar-container">
                         <div className="groupcalendar-box">
-                        <DatePicker
-                                    // 시작 날짜 셋팅
-                                    selected={selectedDate}
-                                    locale={ko}
-                                    // 날짜가 클릭되면 해당 날짜로 이동
-                                    onChange={handlerChangeDate}
-                                    inline
-                                    // 토, 일 색깔 변경
-                                    dayClassName={date =>
-                                        getDayName(createDate(date)) === '토' ? "saturday"
-                                            :
-                                            getDayName(createDate(date)) === '일' ? "sunday" : undefined
-                                    }
-                                    todayButton="today"
-                                />
+                            <DatePicker
+                                // 시작 날짜 셋팅
+                                selected={selectedDate}
+                                locale={ko}
+                                // 날짜가 클릭되면 해당 날짜로 이동
+                                onChange={handlerChangeDate}
+                                inline
+                                // 토, 일 색깔 변경
+                                dayClassName={date =>
+                                    getDayName(createDate(date)) === '토' ? "saturday"
+                                        :
+                                        getDayName(createDate(date)) === '일' ? "sunday" : undefined
+                                }
+                                todayButton="today"
+                            />
+                        </div>
+                        {/* 교환일기 멤버 목록 조회 */}
+                        <div>
+                            교환일기 멤버: {memberList.map((memberList, index) => {
+                                return (
+                                    <>
+                                        <br></br>
+                                        <span key={index} >{memberList.memberName} ( {memberList.memberId} )</span>
+                                    </>
+                                )
+                            })
+                            }
+
                         </div>
                     </div>
                     <div className="group_line" />
@@ -163,21 +235,13 @@ const GroupShareList = ({ history, name, match }) => {
 
                         <button className='group_write' onClick={handlerClickWrite}>
                             <div className='groupWrite-button' />
-                                <span className="writebutton_text"> 일기 쓰기 </span>
+                            <span className="writebutton_text"> 일기 쓰기 </span>
                         </button>
-                                    
+
                         <div className='diary1'>
                             {/* { list.map((list, index) => <GroupShareEach key={ index } list={ list } />) } */}
                             <div className="diaryWrap1">
-                                { result() }
-                                {/* 모달 */}
-                                {/* {modalState && <Modal closeModal={closeModal} />}
-                                <button className="groupdiaryeachbutton" type="button" onClick={() => setModalState(true)}><GroupShareListEach /></button>
-                                <button className="groupdiaryeachbutton" type="button" onClick={() => setModalState(true)}><GroupShareListEach /></button>
-                                <button className="groupdiaryeachbutton" type="button" onClick={() => setModalState(true)}><GroupShareListEach /></button>
-                                <button className="groupdiaryeachbutton" type="button" onClick={() => setModalState(true)}><GroupShareListEach /></button>
-                                <button className="groupdiaryeachbutton" type="button" onClick={() => setModalState(true)}><GroupShareListEach /></button> */}
-                                
+                                {result()}
                             </div>
                         </div>
                     </div>

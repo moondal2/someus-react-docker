@@ -13,29 +13,15 @@ const Modal_Mydiary = (props, { history }) => {
 
     const diaryId = props.list.diaryId;
     
-    const moodImg = (mood) => {
-        if (mood == 0) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_1.png`} /> }
-        else if (mood == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_2.png`} /> }
-        else if (mood == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_3.png`} /> }
-        else if (mood == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_4.png`} /> }
-        else if (mood == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_5.png`} /> }
-    };
-
-    const weatherImg = (weather) => {
-        if (weather == 0) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_1.png`} /> }
-        else if (weather == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_2.png`} /> }
-        else if (weather == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_3.png`} /> }
-        else if (weather == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_4.png`} /> }
-        else if (weather == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_5.png`} /> }
-    }
-
     useEffect(() => {
+        // 모달 화면 설정
         document.body.style.cssText = `a
         position: fixed;
         top: -${window.scrollY}px;
         overflow-y: scroll;
         width: 100%;`;
         
+        // 마운트될 때 diaryid를 기준으로 내용, 기분, 날씨 설정
         console.log(props.list);
         setContents(props.list.diaryContent);
         setMood(props.list.moodId);
@@ -48,16 +34,29 @@ const Modal_Mydiary = (props, { history }) => {
         };
     }, []);
 
-    const modalClose = () => {
-        props.closeModal();
-        console.log(props.closeModal());
+    // moodId에 따라 moodImg 설정
+    const moodImg = (mood) => {
+        if (mood == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_1.png`} /> }
+        else if (mood == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_2.png`} /> }
+        else if (mood == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_3.png`} /> }
+        else if (mood == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_4.png`} /> }
+        else if (mood == 5) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_5.png`} /> }
+    };
+
+    // weatherId에 따라 weatherImg 설정
+    const weatherImg = (weather) => {
+        if (weather == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_1.png`} /> }
+        else if (weather == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_2.png`} /> }
+        else if (weather == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_3.png`} /> }
+        else if (weather == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_4.png`} /> }
+        else if (weather == 5) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_5.png`} /> }
     };
 
     const hanlderChangeContents = (e) => {
         setContents(e.target.value);
-        console.log(contents);
     };
 
+    // 내용 수정 이벤트 핸들러
     const handlerOnClickUpdate = () => {
         axios.put(`http://localhost:8080/api/someus/private/${diaryId}`,
                     { "diaryContent": contents },
@@ -79,6 +78,7 @@ const Modal_Mydiary = (props, { history }) => {
             })
     };
 
+    // 일기 삭제 이벤트 핸들러
     const handlerOnClickDelete = () => {
         axios.delete(`http://localhost:8080/api/someus/private/${diaryId}`,
         { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}})
@@ -86,6 +86,7 @@ const Modal_Mydiary = (props, { history }) => {
                 if(response.data === 1) {
                     alert(`정상적으로 삭제되었습니다.`);
                     props.closeModal();
+                    history.push(`/someus/private`);
                 } else {
                     alert(`삭제에 실패했습니다.`);
                     return;

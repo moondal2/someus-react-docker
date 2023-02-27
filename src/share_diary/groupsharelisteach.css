@@ -13,12 +13,23 @@
     font-style: normal;
 }
 
-.group_eachdiary .group_diaryimg {
+.group_eachdiary .group_diaryimg1 {
     width: 260px;
     height: 260px;
     background-color: #FFFDE7;
     border-radius: 10px;
     background-image: url('../img/group_half.png');
+    background-size: 240px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.group_eachdiary .group_diaryimg2 {
+    width: 260px;
+    height: 260px;
+    background-color: #FFFDE7;
+    border-radius: 10px;
+    background-image: url('../img/group_true.png');
     background-size: 240px;
     background-position: center;
     background-repeat: no-repeat;

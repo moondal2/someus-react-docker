@@ -23,6 +23,30 @@ const MyDiaryList = ({ match, history }) => {
     const [ modalState, setModalState ] = useState([]);
     const [ selectedDate, setSelectedDate ] = useState('');
 
+     //{ 변수 }TodoList 기본 데이터(서버에서 GET으로 받아와야 함.)setTodos(response.data.list)
+     const [todos, setTodos] = useState([]);
+
+     //{ 함수 }Todos를 받아오는 함수 설정, useEffect할 때 getTodos함수 실행 필요!!
+     async function getTodos(){
+        const token = sessionStorage.getItem('token');
+        const decode_token = jwt_decode(token);
+
+         try {
+             const response = await axios.get(`http://localhost:8080/api/someus/private/list/goal/${decode_token.sub}/${formatDate(startDate)}`,
+             {   headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+             });
+             console.log('response.data=',response.data);
+             const dataA = response.data;
+             setTodos(dataA);
+             //데이터가 저장되어도 한박자 느리게 반응되니까 useCallback으로 조정해야 할 듯.
+             console.log('response.data=todos');
+             console.log(todos);
+         } catch(error){
+             console.log(error);
+             return;
+         };
+     };
+
     const closeModal = (index) => {
         setModalState(prevState =>{
             const updateArray = [...prevState];
@@ -36,7 +60,7 @@ const MyDiaryList = ({ match, history }) => {
         const decode_token = jwt_decode(token);
         setMemberId(decode_token.sub);
         setMemberName(decode_token.name);
-
+        getTodos();
         let memberId = decode_token.sub;
         
         axios.get(`http://localhost:8080/api/someus/private/page/${memberId}`,
@@ -90,7 +114,7 @@ const MyDiaryList = ({ match, history }) => {
 
     // 날짜 변경 시 해당 날짜를 기준으로 목록이 리랜더링
     const handlerChangeDate = (date) => {
-        setSelectedDate(date)
+        setStartDate(date)
         console.log(formatDate(date))
         const createdDt = formatDate(date);
         axios.get(`http://localhost:8080/api/someus/private/page/${memberId}/${createdDt}`,
@@ -147,7 +171,7 @@ const MyDiaryList = ({ match, history }) => {
                                     // 시작 날짜 셋팅
                                     // selected={startDate}
                                     locale={ko}
-                                    selected={selectedDate}
+                                    selected={startDate}
                                     // 날짜가 클릭되면 해당 날짜로 이동
                                     onChange={handlerChangeDate}
                                     inline
@@ -161,13 +185,13 @@ const MyDiaryList = ({ match, history }) => {
                                 />
                             </div>
                             <div className="todo-box">
-                                <TodoList />
+                            <TodoList todos={todos} setTodos={setTodos} startDate={startDate} getTodos={getTodos}/>
                             </div>
                         </div>
                         <div className='diary-container'>
                             <div>
                                 <p className="name_diary">{ memberName }의 일기</p>
-                                <p className='date'>{selectedDate.getMonth() + 1} {selectedDate.toLocaleString("en-US", { month: "long" })}</p>
+                                <p className='date'>{startDate.getMonth() + 1} {startDate.toLocaleString("en-US", { month: "long" })}</p>
                             </div>
 
                             <button className='write' onClick={handlerClickWrite}>

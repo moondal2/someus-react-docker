@@ -77,7 +77,7 @@
 .groupL_weather {
   width: 45px;
   height: 45px;
-  background-image: url('../img/weather_2.png');
+  /* background-image: url('../img/weather_2.png'); */
   background-position: center;
   background-repeat: no-repeat;
   background-size: 40px;
@@ -86,7 +86,7 @@
 .groupL_mood {
   width: 45px;
   height: 45px;
-  background-image: url('../img/mood_1.png');
+  /* background-image: url('../img/mood_1.png'); */
   background-size: contain;
   background-repeat: no-repeat;
   margin-left: 12px;
@@ -183,7 +183,7 @@
 .groupR_weather {
   width: 45px;
   height: 45px;
-  background-image: url('../img/weather_1.png');
+  /* background-image: url('../img/weather_1.png'); */
   background-position: center;
   background-repeat: no-repeat;
   background-size: 40px;
@@ -192,7 +192,7 @@
 .groupR_mood {
   width: 45px;
   height: 45px;
-  background-image: url('../img/mood_1.png');
+  /* background-image: url('../img/mood_1.png'); */
   background-size: contain;
   background-repeat: no-repeat;
   margin-left: 12px;

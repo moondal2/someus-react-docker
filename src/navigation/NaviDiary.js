@@ -63,6 +63,3 @@ const NaviDiary = (props) => {
 }
 
 export default NaviDiary;
-
-
-// 초초 나 갈게 ㅜㅜ 무리하지말고 근양대충 하고 가 내일 하면 되지 우리 2일밖에 안 됐어 
