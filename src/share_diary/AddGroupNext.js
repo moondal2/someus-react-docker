@@ -67,27 +67,25 @@ const AddGroupNext = (props, { history }) => {
 
     return (
         <>
-            <div className="modal" onClick={() => props.closeModal}>
-                <div className="modalBody" onClick={(e) => e.stopPropagation()}>
-                    
-                            <div className="addgroup_background" >
-                                <div className="addgroup_box">
-                                    <div className="addgroup_con">
-                                        <div className="groupdiary" alt="GroupDiaryNew"></div>
-                                        <div className="groupMemberid">
-                                            <span className="groupMemberidimg"></span>
-                                            <input type="text"
-                                                value={shareMemberId}
-                                                onChange={handlerChangeShareMemberId}
-                                                placeholder='함께할 친구의 아이디를 입력해 주세요.' />
-                                        </div>
-                                        <button type="button" onClick={onSubmit}>등록</button>
-
-                                    </div>
+            <div className="add-modal" onClick={() => props.closeModal}>
+                <div className="add-modalBody" onClick={(e) => e.stopPropagation()}>
+                    <div className="addgroup_background" >
+                        <div className="addgroup_box">
+                            <div className="groupdiary" alt="GroupDiaryNew"></div>
+                            <div className="add-form">
+                                <div className="grouptitle">
+                                    <span className="grouptitleimg"></span>
+                                    <input className="add-input" type="text"
+                                        value={shareMemberId}
+                                        onChange={handlerChangeShareMemberId}
+                                        placeholder='함께할 친구의 아이디를 입력해 주세요.' />
                                 </div>
+                                <button className="add-button" type="button" onClick={onSubmit}>등록</button>
                             </div>
-                        </div></div>
-                
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }

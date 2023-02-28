@@ -27,7 +27,6 @@ const AddGroup = (props, { history }) => {
         };
     }, []);
 
-    
     const modalClose = () => {
         props.closeModal();
         console.log(props.closeModal());
@@ -44,16 +43,9 @@ const AddGroup = (props, { history }) => {
               { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}}
             )
             .then((response) => {
-                console.log(response);
                 alert(`${shareRoomName} 정상적으로 등록되었습니다.`);
                 setShareRoomName(shareRoomName);
-                console.log(shareRoomName);
                 handlerClickNext();
-                console.log(props.modalStateN);
-                console.log(props.modalState);
-                // setModalState(false);
-                // setModalState(false);
-                
             })
             .catch((error) => {
                 alert(`등록에 실패했습니다.`);
@@ -68,23 +60,22 @@ const AddGroup = (props, { history }) => {
 
     return (
         <>
-            <div className="modal" onClick={props.closeModal}>
-                <div className="modalBody" onClick={(e) => e.stopPropagation()}>
+            <div className="add-modal" onClick={props.closeModal}>
+                <div className="add-modalBody" onClick={(e) => e.stopPropagation()}>
                     <div className="addgroup_background" >
                         <div className="addgroup_box">
-                            <div className="addgroup_con">
-                                <div className="groupdiary"></div>
-                                <div>
-                                    <div className="grouptitle">
-                                        <span className="grouptitleimg"></span>
-                                        <input type="text"
-                                            value={shareRoomName}
-                                            onChange={handlerChangeRoomName}
-                                            placeholder='교환 일기의 이름을 정해 주세요.'>
-                                        </input>
-                                    </div>
-                                    <input type="button" onClick={onSubmit} value='짝꿍 등록하기'></input>
-                                    {/* {modalState 
+                            <div className="groupdiary" alt="PrivateDiaryNew"></div>
+                            <div className="add-form">
+                                <div className="grouptitle">
+                                    <span className="grouptitleimg"></span>
+                                    <input className="add-input" type="text"
+                                        value={shareRoomName}
+                                        onChange={handlerChangeRoomName}
+                                        placeholder='교환 일기의 이름을 정해 주세요.'>
+                                    </input>
+                                </div>
+                                <input className="add-button" type="button" onClick={onSubmit} value='짝꿍 등록하기'></input>
+                                {/* {modalState 
                                     && 
                                     <AddGroupNext shareRoomName={shareRoomName} 
                                                     // closeModal={() => closeModal} 
@@ -93,7 +84,6 @@ const AddGroup = (props, { history }) => {
                                                     />
                                                     
                                                     } */}
-                                </div>
                             </div>
                         </div>
                     </div>

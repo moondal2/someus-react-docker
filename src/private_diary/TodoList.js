@@ -1,11 +1,11 @@
 import "./TodoList.css";
-import { BsFillEraserFill } from "react-icons/bs";
+import { FaEraser } from "react-icons/fa";
 import axios from "axios";
 import jwt_decode from 'jwt-decode';
 
 const TodoList = (props) => {
 
-    //{ 변수 } 토큰과 멤버ID
+    //{ 변수 } 토큰과 멤버IDget
     const token = sessionStorage.getItem('token');
     const memberId = jwt_decode(token).sub;
 
@@ -107,7 +107,6 @@ const TodoList = (props) => {
             const updateArray = [...prevState];
             const index = updateArray.findIndex(item => item.goalId === id);
             updateArray[index] = { ...updateArray[index], goalState: (updateArray[index].goalState + 1) % 3 };
-            console.log('이미지번호 + 1', updateArray);
 
             //객체 배열에서 수정한 객체를 가져옴
             const arrayTodos = updateArray.find(array => array.goalId === id);
@@ -172,7 +171,8 @@ const TodoList = (props) => {
                 if (response.data === 1) {
                     console.log('추가완료');
                     //추가하고 추가된 상태로 select 다시 해옴.
-                    props.getTodos();
+                    props.getTodos(newStartDate);
+                    console.log(newStartDate);
                 } else {
                     console.log('추가실패');
                     return;
@@ -193,13 +193,13 @@ const TodoList = (props) => {
 
                     <ul>
                         {/* MyDiaryList에서 가져온 todos를 map으로 반복 출력 해주고 [이미지, 목표내용, 삭제버튼] 생성 */}
-                        {props.todos.map((todo, index) => (
+                        {props.todos && props.todos.map((todo, index) => (
                             <li key={index}>
                                 {todo.goalState == 0 ? <span><img className="checkboxImg" src={process.env.PUBLIC_URL + images[0]} alt="x" onClick={() => handlerImgClick(todo.goalId)} /></span> : ""}
                                 {todo.goalState == 1 ? <span><img className="checkboxImg" src={process.env.PUBLIC_URL + images[1]} alt="x" onClick={() => handlerImgClick(todo.goalId)} /></span> : ""}
                                 {todo.goalState == 2 ? <span><img className="checkboxImg" src={process.env.PUBLIC_URL + images[2]} alt="x" onClick={() => handlerImgClick(todo.goalId)} /></span> : ""}
                                 <input key={index} type="text" value={todo.goalContents} onBlur={(e) => handlerInputFocusOut(todo.goalId, e.target.value)} onChange={e => handlerChange(todo.goalId, e.target.value)} placeholder=""></input>
-                                <BsFillEraserFill onClick={() => handlerClickEraser(todo.goalId)} />
+                                <FaEraser id="edit" onClick={() => handlerClickEraser(todo.goalId)} />
                             </li>
                         ))}
                     </ul>

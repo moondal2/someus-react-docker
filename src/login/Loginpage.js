@@ -96,8 +96,8 @@ const Loginpage = ({ history }) => {
 
                             </div>
                             <div className="loginBtnBox">
-                                <button type="regist" onClick={handlerRegist}>회원가입</button>
-                                <button type="login">로그인</button>
+                                <button type="button" onClick={handlerRegist}>회원가입</button>
+                                <button type="submit">로그인</button>
                             </div>
                         </form>
                     </div>

@@ -32,7 +32,7 @@ const Navigation = (props) => {
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
-        console.log(token);
+        
         if ( token != null ) {
             const decode_token = jwt_decode(token);
             setIsLoggedIn(true);
@@ -44,7 +44,6 @@ const Navigation = (props) => {
 
     return (
         <>
-        { console.log(isLoggedIn) }
             { isLoggedIn ?  
             <NaviLogin handlerClickHome={ handlerClickHome }
                         handlerClickHowTo = { handlerClickHowTo }

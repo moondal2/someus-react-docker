@@ -44,10 +44,10 @@ const GroupDiaryWrite = ({ history, match }) => {
         for (let i = 0; i < weather.length; i++) {
             result.push(
                 <>
-                    <img src={weather[i].weatherId == weatherActive
+                    <img className="groupweather_img" 
+                        src={weather[i].weatherId == weatherActive
                         ? `/img/weatherC_${weather[i].weatherId}.png`
                         : `/img/weather_${weather[i].weatherId}.png`}
-                        style={{ width: '30px', height: '30px' }}
                         onClick={toggleWeatherActive}
                         alt={weather[i].weatherId} />
                 </>
@@ -61,11 +61,10 @@ const GroupDiaryWrite = ({ history, match }) => {
         for (let i = 0; i < mood.length; i++) {
             result.push(
                 <>
-                    <img
+                    <img className="groupmood_img"
                         src={mood[i].moodId == moodActive
-                            ? `/img/mood_${mood[i].moodId}.png`
+                            ? `/img/moodC_${mood[i].moodId}.png`
                             : `/img/mood_${mood[i].moodId}.png`}
-                        style={{ width: '30px', height: '30px' }}
                         onClick={toggleMoodActive}
                         alt={mood[i].moodId} />
                 </>
@@ -82,6 +81,7 @@ const GroupDiaryWrite = ({ history, match }) => {
     const toggleMoodActive = (e) => {
         e.preventDefault();
         setMoodActive(e.target.alt);
+        console.log(weatherActive);
     };
 
     const handlerOnChangeContents = (e) => {

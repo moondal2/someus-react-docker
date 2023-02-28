@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ReactDatePicker from "react-datepicker";
 import NaviDiary from "../navigation/NaviDiary";
 import AddGroup from "./AddGroup";
 import './groupList.css';
@@ -60,7 +59,7 @@ const GroupList = ({ name, history, match }) => {
 
     const handlerSubmit = () => {
         setModalState(false);
-        history.push(`/someus/share/grouplist`);
+        window.location.reload();
     }
 
     const onClickPlus = () => {
@@ -98,14 +97,6 @@ const GroupList = ({ name, history, match }) => {
                                     />
                         }
                         { result() }
-                    {/* {modalState && <AddGroup closeModal={closeModal} />} */}
-
-                    {/* // TODO. grouplist가 null이 아닐 때 맵 돌리도록 */}
-                    {/* {groupList.map((groupList, index) =>
-                        <div key={index}>
-                            <p>{groupList.title}</p>
-                            <p>{groupList.img}</p>
-                        </div>)} */}
                 </div>
             </div>
         </>

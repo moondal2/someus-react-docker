@@ -3,12 +3,11 @@ import './groupshareEach.css';
 
 const GroupShareEach = ({ list, history }) => {
 
-   
-
     const handlerClick = () => {
         console.log(list.shareRoomId);
         history.push(`/someus/share/groupsharelist/${list.shareRoomId}`);
-    }
+    };
+    
     return (
         <>
         <div className='groupEachdiary' onClick={handlerClick}>

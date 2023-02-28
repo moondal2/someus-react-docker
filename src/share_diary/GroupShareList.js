@@ -26,7 +26,8 @@ const GroupShareList = ({ history, name, match }) => {
 
     const [list, setList] = useState([]);
     const [allList, setAllList] = useState([]);
-    const [memberList, setMemberList] = useState([]);//교환일기 멤버 목록 조회로 인한 변수 추가
+    const [memberList, setMemberList] = useState([]);
+    //교환일기 멤버 목록 조회로 인한 변수 추가
     const [startDate, setStartDate] = useState(new Date());
     const { shareRoomId } = match.params;
     const { write } = match.params;
@@ -143,12 +144,10 @@ const GroupShareList = ({ history, name, match }) => {
         return `${year}-${month}-${day}`;
     };
 
-
     // 날짜 변경 시 해당 날짜를 기준으로 목록이 리랜더링
     const handlerChangeDate = (date) => {
-        setSelectedDate(date)
-        console.log(formatDate(date))
         const createdDt = formatDate(date);
+        setStartDate(date);
         axios.get(`http://localhost:8080/api/someus/shareroom/${shareroomid}/${createdDt}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
@@ -159,7 +158,42 @@ const GroupShareList = ({ history, name, match }) => {
                 }
                 // 해당하는 날짜에 대한 일기의 데이터가 있는 경우 리스트를 새로 만들어 map 함수 실행
                 else {
-                    setList(response.data);
+                    setList(() => {
+                        const updateArray = response.data;
+                        //createdDt 글자 앞 10글자로 변경
+                        const updateArray2 = updateArray.map(item => ({
+                            ...item, createdDt: item.createdDt.slice(0, 10)
+                        }));
+    
+                        //같은 날짜인 데이터가 있다면 줄여야함. 줄이기 전에 0과 1로 중복 날짜 구분 표시.
+                        for (let i = 0; i < updateArray2.length; i++) {
+                            if (i !== updateArray2.length - 1 && updateArray2[i].createdDt == updateArray2[i + 1].createdDt) {
+                                updateArray2[i] = { ...updateArray2[i], number: 0 };
+                                updateArray2[i + 1] = { ...updateArray2[i + 1], number: 1 };
+                                i++;
+                            } else {
+                                updateArray2[i] = { ...updateArray2[i], number: 0 };
+                            }
+                        };
+    
+                        //중복날짜 포함 일기 리스트
+                        setAllList(updateArray2);
+    
+                        //number가 0인 것만 추출
+                        const updateArray3 = updateArray2.filter((data) => data.number === 0);
+    
+                        for (let i = 0; i < updateArray3.length; i++) {
+                            for (let j = 0; j < updateArray2.length; j++) {
+                                if (updateArray3[i].createdDt === updateArray2[j].createdDt) {
+                                    updateArray3[i] = { ...updateArray3[i], number: updateArray2[j].number };
+                                } else {
+                                }
+                            };
+                        };
+    
+    
+                        return updateArray3;
+                    });
                 }
             })
             .catch((error) => {
@@ -196,10 +230,10 @@ const GroupShareList = ({ history, name, match }) => {
                 <div className='body1' >
                     <div className="groupcalendar-container">
                         <div className="groupcalendar-box">
-                            <DatePicker
+                        <DatePicker
                                 // 시작 날짜 셋팅
-                                selected={selectedDate}
                                 locale={ko}
+                                selected={startDate}
                                 // 날짜가 클릭되면 해당 날짜로 이동
                                 onChange={handlerChangeDate}
                                 inline
@@ -207,18 +241,23 @@ const GroupShareList = ({ history, name, match }) => {
                                 dayClassName={date =>
                                     getDayName(createDate(date)) === '토' ? "saturday"
                                         :
-                                        getDayName(createDate(date)) === '일' ? "sunday" : undefined
+                                    getDayName(createDate(date)) === '일' ? "sunday" : undefined
                                 }
                                 todayButton="today"
                             />
                         </div>
                         {/* 교환일기 멤버 목록 조회 */}
-                        <div>
-                            교환일기 멤버: {memberList.map((memberList, index) => {
+                        <div className="group-member_box">
+                            <p className="group-member_title">함께 기록하는 사람</p> {memberList.map((memberList, index) => {
                                 return (
                                     <>
-                                        <br></br>
-                                        <span key={index} >{memberList.memberName} ( {memberList.memberId} )</span>
+                                        {/* <div className="group-member_icon"/> */}
+                                        <div className="group-memberlist" key={index} >
+                                            <div className="group-member_icon"/>
+                                            <div className="group-member_id">
+                                                <b>{memberList.memberName}</b> ( {memberList.memberId} )
+                                            </div>
+                                        </div>
                                     </>
                                 )
                             })

@@ -1,28 +1,119 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.mypageBackground {
+  background-image: url('../img/bgB_mypage.png');
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  display: block;
+  position: relative;
+  height: 860px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mypageBackground::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.mypage {
+  width: 1040px;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+/* 다이어리 선택 */
+.myD {
+  width: 500px;
+  height: 550px;
+  margin-right: 40px;
+  background-image: url('../img/D_blue.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 500px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  transition: all .2s ease;
+  cursor: pointer;
+}
+.myD:hover {
+  background-image: url('../img/D_hblue.png');
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 20px #2179F9;
+  border-radius: 20px;
+}
+.groupD {
+  width: 500px;
+  height: 550px;
+  background-image: url('../img/D_green.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 500px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  transition: all .2s ease;
+  cursor: pointer;
+}
+.groupD:hover {
+  background-image: url('../img/D_hgreen.png');
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 20px #14B21F;
+  border-radius: 20px;
+}
+
+/* lotation logo */
+.bg-logo_lotation {
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  top:50%;
+  left: 3%;
+}
+.bg-logoimg {
+  width: 200px;
+  height: 200px;
+  background-image: url('../img/bgB_mypage1.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 200px;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.bg-lotationimg {
+  width: 600px;
+  height: 600px;
+  background-image: url('../img/bgB_mypage2.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 600px;
+  animation: rotate 8s ease infinite;
+}
+@keyframes rotate {
+  from { 
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+   }
+  to {
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
   }
-  
-  .mypageBackground {
+}
+
+@media (max-width: 1920px) {
+  .loginPage {
     width: 1920px;
-    background-image: url('../img/bgB_login.png');
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-    display: block;
-    height: 100vh;
-    box-sizing: border-box;
-    /* padding: 200px 100px; */
   }
-
-  /* 이 부분만 수정 */
-  .myD img, 
-  .groupD img {
-    width: 300px;
-    height: 500px;
-  }
-
-  @media (max-width: 1920px) {
-    .loginPage {
-      width: 1920px;
-    }
-  }
+}

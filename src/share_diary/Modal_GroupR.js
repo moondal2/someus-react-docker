@@ -23,23 +23,23 @@ const Modal_GroupR = (props) => {
         console.log(props.closeModal());
     };
 
-    // moodId에 따라 moodImg 설정
-    const moodImg = (mood) => {
-        if (mood == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_1.png`} /> }
-        else if (mood == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_2.png`} /> }
-        else if (mood == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_3.png`} /> }
-        else if (mood == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_4.png`} /> }
-        else if (mood == 5) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_5.png`} /> }
-    };
+   // moodId에 따라 moodImg 설정
+   const moodImg = (mood) => {
+    if (mood == 1) { return <img className="groupR_mood" src={`/img/moodC_1.png`} /> }
+    else if (mood == 2) { return <img className="groupR_mood" src={`/img/moodC_2.png`} /> }
+    else if (mood == 3) { return <img className="groupR_mood" src={`/img/moodC_3.png`} /> }
+    else if (mood == 4) { return <img className="groupR_mood" src={`/img/moodC_4.png`} /> }
+    else if (mood == 5) { return <img className="groupR_mood" src={`/img/moodC_5.png`} /> }
+};
 
-    // weatherId에 따라 weatherImg 설정
-    const weatherImg = (weather) => {
-        if (weather == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_1.png`} /> }
-        else if (weather == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_2.png`} /> }
-        else if (weather == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_3.png`} /> }
-        else if (weather == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_4.png`} /> }
-        else if (weather == 5) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_5.png`} /> }
-    };
+// weatherId에 따라 weatherImg 설정
+const weatherImg = (weather) => {
+    if (weather == 1) { return <img className="groupR_weather" src={`/img/weather_1.png`} /> }
+    else if (weather == 2) { return <img className="groupR_weather" src={`/img/weather_2.png`} /> }
+    else if (weather == 3) { return <img className="groupR_weather" src={`/img/weather_3.png`} /> }
+    else if (weather == 4) { return <img className="groupR_weather" src={`/img/weather_4.png`} /> }
+    else if (weather == 5) { return <img className="groupR_weather" src={`/img/weather_5.png`} /> }
+};
 
 
     return (

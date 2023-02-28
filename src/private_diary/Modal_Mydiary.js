@@ -36,20 +36,20 @@ const Modal_Mydiary = (props, { history }) => {
 
     // moodId에 따라 moodImg 설정
     const moodImg = (mood) => {
-        if (mood == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_1.png`} /> }
-        else if (mood == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_2.png`} /> }
-        else if (mood == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_3.png`} /> }
-        else if (mood == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_4.png`} /> }
-        else if (mood == 5) { return <img style={{width: '30px', height: '30px'}}src={`/img/mood_5.png`} /> }
+        if (mood == 1) { return <img className="mood_detail"src={`/img/moodC_1.png`} /> }
+        else if (mood == 2) { return <img className="mood_detail" src={`/img/moodC_2.png`} /> }
+        else if (mood == 3) { return <img className="mood_detail" src={`/img/moodC_3.png`} /> }
+        else if (mood == 4) { return <img className="mood_detail" src={`/img/moodC_4.png`} /> }
+        else if (mood == 5) { return <img className="mood_detail" src={`/img/moodC_5.png`} /> }
     };
 
     // weatherId에 따라 weatherImg 설정
     const weatherImg = (weather) => {
-        if (weather == 1) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_1.png`} /> }
-        else if (weather == 2) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_2.png`} /> }
-        else if (weather == 3) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_3.png`} /> }
-        else if (weather == 4) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_4.png`} /> }
-        else if (weather == 5) { return <img style={{width: '30px', height: '30px'}}src={`/img/weather_5.png`} /> }
+        if (weather == 1) { return <img className="weather_detail" src={`/img/weather_1.png`} /> }
+        else if (weather == 2) { return <img className="weather_detail" src={`/img/weather_2.png`} /> }
+        else if (weather == 3) { return <img className="weather_detail" src={`/img/weather_3.png`} /> }
+        else if (weather == 4) { return <img className="weather_detail" src={`/img/weather_4.png`} /> }
+        else if (weather == 5) { return <img className="weather_detail" src={`/img/weather_5.png`} /> }
     };
 
     const hanlderChangeContents = (e) => {
@@ -64,7 +64,7 @@ const Modal_Mydiary = (props, { history }) => {
             .then((response) => {
                 if(response.data === 1) {
                     alert(`정상적으로 수정되었습니다.`);
-                    props.closeModal();
+                    window.location.reload();
                 } else {
                     alert(`수정에 실패했습니다.`);
                     return;
@@ -86,7 +86,7 @@ const Modal_Mydiary = (props, { history }) => {
                 if(response.data === 1) {
                     alert(`정상적으로 삭제되었습니다.`);
                     props.closeModal();
-                    history.push(`/someus/private`);
+                    window.location.reload();
                 } else {
                     alert(`삭제에 실패했습니다.`);
                     return;
@@ -101,8 +101,8 @@ const Modal_Mydiary = (props, { history }) => {
 
     return (
         <>
-            <div className="modal" onClick={props.closeModal}>
-                <div className="modalBody" onClick={(e) => e.stopPropagation()}>
+            <div className="private_modal" onClick={props.closeModal}>
+                <div className="private_modalBody" onClick={(e) => e.stopPropagation()}>
                     <div className="modelLeft">
                     <img className="modalImg" src={image} />
                     </div>
@@ -114,10 +114,6 @@ const Modal_Mydiary = (props, { history }) => {
                             <span>{moodImg(mood)}</span>
                             </div>
                         </div>
-
-                        <div className="middleLine"></div>
-                        <hr id="middleLine" />
-
                         <textarea className='dairyContents' value={contents} onChange={hanlderChangeContents}></textarea>
                         
                         <div className="bottom">
