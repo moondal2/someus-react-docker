@@ -72,16 +72,16 @@ const GroupDiaryWrite = ({ history, match }) => {
         } return result;
     };
 
+    // 사용자가 날씨 이미지를 누르면 해당 날씨의 id가 active 형태로 바뀜
     const toggleWeatherActive = (e) => {
         e.preventDefault();
         setWeatherActive(e.target.alt);
-        console.log(weatherActive);
     };
 
+    // 사용자가 기분 이미지를 누르면 해당 기분의 id가 active 형태로 바뀜
     const toggleMoodActive = (e) => {
         e.preventDefault();
         setMoodActive(e.target.alt);
-        console.log(weatherActive);
     };
 
     const handlerOnChangeContents = (e) => {
@@ -177,28 +177,26 @@ const GroupDiaryWrite = ({ history, match }) => {
             <div className='groupWrite_background'>
                 <div className='groupWrite_container'>
                     <h1>오늘의 일기</h1>
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={ onSubmit }>
                         <div>
                             <div className='writeheader0'>
                                 <div className='weather-container0'>
                                     <p>오늘의 날씨</p>
-                                    {weatherList()}
+                                    { weatherList() }
                                 </div>
                                 <div className='mood-container0'>
                                     <p>오늘의 기분은?</p>
-                                    {moodList()}
+                                    { moodList() }
                                 </div>
                             </div>
 
                             <textarea className='writebody_box'
                                 placeholder="오늘의 하루를 입력해 주세요."
-                                value={contents}
-                                onChange={handlerOnChangeContents}></textarea>
+                                value={ contents }
+                                onChange={ handlerOnChangeContents }></textarea>
 
                             <div className='writefooter0'>
-                                {/* <div className='fileBox0'> */}
-                                <input className='fileBox0' type='file' id='file' onChange={handleChangeFile} />
-                                {/* </div> */}
+                                <input className='fileBox0' type='file' id='file' onChange={ handleChangeFile } />
                             </div>
                             <input className='submit0' type='submit' value='제출' />
                         </div>

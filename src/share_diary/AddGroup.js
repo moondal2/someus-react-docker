@@ -5,11 +5,9 @@ import './addgroup.css';
 import AddGroupNext from "./AddGroupNext";
 import NaviDiary from "../navigation/NaviDiary";
 
-const AddGroup = (props, { history }) => {
-    //AddGroupNext모달 값
-    // const [ modalState, setModalState ] = useState(false);
+const AddGroup = (props) => {
+    
     const [ shareRoomName, setShareRoomName ] = useState('');
-
     const { handlerClickNext } = props;
 
     //모달 창
@@ -26,11 +24,6 @@ const AddGroup = (props, { history }) => {
             window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
         };
     }, []);
-
-    const modalClose = () => {
-        props.closeModal();
-        console.log(props.closeModal());
-    };
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -75,15 +68,6 @@ const AddGroup = (props, { history }) => {
                                     </input>
                                 </div>
                                 <input className="add-button" type="button" onClick={onSubmit} value='짝꿍 등록하기'></input>
-                                {/* {modalState 
-                                    && 
-                                    <AddGroupNext shareRoomName={shareRoomName} 
-                                                    // closeModal={() => closeModal} 
-                                                    modalState2 = { modalState2 }
-                                                    setModalState2 = { setModalState2 }
-                                                    />
-                                                    
-                                                    } */}
                             </div>
                         </div>
                     </div>

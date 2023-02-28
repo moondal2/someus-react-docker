@@ -17,12 +17,11 @@ const MyDiaryList = ({ match, history }) => {
 
     const [list, setList] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
-    const { diaryId } = match.params;
     const [memberId, setMemberId] = useState('');
     const [memberName, setMemberName] = useState('');
     const [modalState, setModalState] = useState([]);
     const [todos, setTodos] = useState([]);
-    
+
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         const decode_token = jwt_decode(token);
@@ -50,14 +49,14 @@ const MyDiaryList = ({ match, history }) => {
             })
     }, []);
 
-    //{ 함수 }Todos를 받아오는 함수 설정, useEffect할 때 getTodos함수 실행 필요!!
+    // 날짜에 따라 목표 설정
     async function getTodos(createdDt) {
         const token = sessionStorage.getItem('token');
         const decode_token = jwt_decode(token);
 
         try {
             const response = await axios.get(`http://localhost:8080/api/someus/private/list/goal/${decode_token.sub}/${createdDt}`,
-                                            { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } });
+                { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } });
             setTodos(response.data);
         } catch (error) {
             console.log(error);
@@ -73,14 +72,14 @@ const MyDiaryList = ({ match, history }) => {
         });
     };
 
-    // 요일의 이름 반환
+    // datepicker - 요일의 이름 반환
     const getDayName = (date) => {
         return date.toLocaleDateString('ko-KR', {
             weekday: 'long',
         }).substr(0, 1);
     };
 
-    // 날짜를 년, 월, 일로 비교
+    // datepicker - 날짜를 년, 월, 일로 비교
     const createDate = (date) => {
         return new Date(new Date(date.getFullYear()
             , date.getMonth()
@@ -90,32 +89,26 @@ const MyDiaryList = ({ match, history }) => {
             , 0));
     };
 
+    // datepicker의 날짜 형태를 sql 날짜 형태와 맞게 변경
     const formatDate = (date) => {
         if (!date) return '';
         const year = date.getFullYear();
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
         const day = ('0' + date.getDate()).slice(-2);
-        return `${year}-${month}-${day}`;
+        return `${ year }-${ month }-${ day }`;
     };
 
     // 날짜 변경 시 해당 날짜를 기준으로 목록이 리랜더링
     const handlerChangeDate = (date) => {
         const createdDt = formatDate(date);
         setStartDate(date);
-        
+
         axios.get(`http://localhost:8080/api/someus/private/page/${memberId}/${createdDt}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
                 console.log(response);
                 getTodos(createdDt);
-                // 해당하는 날짜에 대한 일기의 데이터가 없을 경우
-                if (list === null) {
-                    alert(`일기를 작성하지 않았어요.`);
-                }
-                // 해당하는 날짜에 대한 일기의 데이터가 있는 경우 리스트를 새로 만들어 map 함수 실행
-                else {
-                    setList(response.data);
-                }
+                setList(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -128,28 +121,26 @@ const MyDiaryList = ({ match, history }) => {
             updateArray[index] = true;
             return updateArray;
         });
-
     };
 
     const handlerClickWrite = () => {
         history.push(`/someus/private/write`)
     };
 
-
     const result = () => {
         return list && list.map((lst, index) => {
             return (
                 <div key={index} id={lst.diaryId}>
-                    {modalState[index] 
-                    && 
-                    <Modal_Mydiary match={match} 
-                                    closeModal={() => closeModal(index)} 
-                                    id={lst.diaryId} 
-                                    list={lst} />}
-                    
-                    <button className="diaryeachbutton" 
-                            type="button"  
-                            value={lst.diaryId} 
+                    {modalState[index]
+                        &&
+                        <Modal_Mydiary match={match}
+                                        closeModal={() => closeModal(index)}
+                                        id={lst.diaryId}
+                                        list={lst} />}
+
+                    <button className="diaryeachbutton"
+                            type="button"
+                            value={lst.diaryId}
                             onClick={() => handlerClickDetail(index)}>
                         <MyDiaryEach list={lst} />
                     </button>
@@ -166,27 +157,25 @@ const MyDiaryList = ({ match, history }) => {
                 <div className='diarylist_background'>
                     <div className="calendar-container">
                         <div className="calendar-box">
-                            <DatePicker
-                                // 시작 날짜 셋팅
-                                locale={ko}
-                                selected={startDate}
-                                // 날짜가 클릭되면 해당 날짜로 이동
-                                onChange={handlerChangeDate}
-                                inline
-                                // 토, 일 색깔 변경
-                                dayClassName={date =>
-                                    getDayName(createDate(date)) === '토' ? "saturday"
-                                        :
-                                    getDayName(createDate(date)) === '일' ? "sunday" : undefined
-                                }
-                                todayButton="today"
+                            <DatePicker locale={ko}
+                                        selected={startDate}
+                                        // 날짜가 클릭되면 해당 날짜로 이동
+                                        onChange={handlerChangeDate}
+                                        inline
+                                        // 토, 일 색깔 변경
+                                        dayClassName={date =>
+                                            getDayName(createDate(date)) === '토' ? "saturday"
+                                                :
+                                                getDayName(createDate(date)) === '일' ? "sunday" : undefined
+                                        }
+                                        todayButton="today"
                             />
                         </div>
                         <div className="todo-box">
-                            <TodoList todos={todos} 
-                                        setTodos={setTodos} 
-                                        startDate={startDate} 
-                                        getTodos={getTodos} />
+                            <TodoList todos={todos}
+                                    setTodos={setTodos}
+                                    startDate={startDate}
+                                    getTodos={getTodos} />
                         </div>
                     </div>
                     <div className='diary-container'>
@@ -201,7 +190,7 @@ const MyDiaryList = ({ match, history }) => {
                         </button>
 
                         <div className='diary'>
-                            <div className="diaryWrap">{result()}</div>
+                            <div className="diaryWrap">{ result() }</div>
                         </div>
                     </div>
                 </div>

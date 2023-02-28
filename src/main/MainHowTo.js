@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react';
 import Navigation from '../navigation/Navigation';
 import './main.css';
-// import howtoBg from 'C:/Javascript/someus-app/src/img/bgB_detail.png';
-import howto from 'C:/javascript/someus-app/src/img/mood_1.png';
 
 const MainHowTo = ({ history }) => {
 
     const howtoDivRef = useRef();
+    
     useEffect(() => {
         const wheelHandler = (e) => {
             e.preventDefault();

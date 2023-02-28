@@ -44,6 +44,7 @@ const Navigation = (props) => {
 
     return (
         <>
+        {/* 로그인 여부에 따라 네비게이션 출력 */}
             { isLoggedIn ?  
             <NaviLogin handlerClickHome={ handlerClickHome }
                         handlerClickHowTo = { handlerClickHowTo }

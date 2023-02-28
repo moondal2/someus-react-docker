@@ -1,11 +1,7 @@
-import axios from 'axios';
 import './groupsharelisteach.css';
-import trueimage from 'C:/javascript/someus-app/src/img/group_half.png';
-
 
 const GroupShareListEach = ({ list }) => {
 
-    
     return (
        
         <div className='group_eachdiary'>

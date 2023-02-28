@@ -19,36 +19,15 @@ function App() {
       <Route path='/login' component={Loginpage} exact={true} />
       <Route path="/someus/regist" component={Regist} exact={true} />
       <Route path='/someus/mypage' component={ (props) => <MyPage {...props} /> } exact={true} />
-
       <Route path='/someus/mainpage' component={ (props) => <Main {...props} /> } exact={true} />
       <Route path='/someus/howto' component={ (props) => <MainHowTo {...props}  /> } exact={true} />
 
       <Route path='/someus/private' component={(props) => <MyDiaryList {...props}  />} exact={true} />
       <Route path='/someus/private/write' component={ (props) => <MyDiaryWrite {...props}  /> } exact={true} />
-      {/* <Route path='/someus/private/detail/:diaryId' component={ (props) => <Modal_Mydiary {...props}  /> } exact={true} /> */}
       
       <Route path='/someus/share/grouplist' component={ (props) => <GroupList {...props} /> } exact={true} />
       <Route path='/someus/share/groupsharelist/:shareroomid' component={ (props) => <GroupShareList {...props}  /> } exact={true} />
       <Route path='/someus/share/:shareroomid/write' component={ (props) => <GroupDiaryWrite {...props}  /> } exact={true} />
-
-
-
-      {/* <Route path='/someus/share/:shareroomId/:createdDt' component={ (props) => <ShareDiaryDetail {...props}  /> } exact={true} /> */}
-      
-      {/* <Route path='/someus/addgroup' component={ (props) => <AddGroup {...props}  /> } exact={true} /> */}
-      
-
-      
-      
-
-      
-      
-      {/* 
-    <Route path='/navi' 
-          component={ 
-            (props) => <NaviDiary {...props} name={ name }/>
-            } exact={ true } /> */}
-    
     </>
   );
 }

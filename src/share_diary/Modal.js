@@ -21,7 +21,7 @@ const Modal = (props) => {
         for (let i = 0; i < props.allList.length; i++) {
             if (props.allList[i].createdDt === props.list.createdDt) {
                 setDiaryDetailInfo(prevState => [...prevState, props.allList[i]]);
-            } else {}
+            } else { }
         }
         return () => {
             const scrollY = document.body.style.top;
@@ -37,19 +37,19 @@ const Modal = (props) => {
     return (
         <>
             <div className="modal" onClick={modalClose}>
-                { props.list.number === 0 ?
-                <div className="group_modalBody" onClick={(e) => e.stopPropagation()}>
-                    <Modal_GroupL diaryDetailInfo={diaryDetailInfo[0]} />
-                    <div className="vertical_line"></div>
-                    <Modal_GroupR />
-                </div>
-                :
-                <div className="group_modalBody" onClick={(e) => e.stopPropagation()}>
-                    <Modal_GroupL diaryDetailInfo={diaryDetailInfo[0]} />
-                    <div className="vertical_line"></div>
-                    <Modal_GroupR diaryDetailInfo={diaryDetailInfo[1]} />
-                </div>
-                }  
+                {props.list.number === 0 ?
+                    <div className="group_modalBody" onClick={(e) => e.stopPropagation()}>
+                        <Modal_GroupL diaryDetailInfo={diaryDetailInfo[0]} />
+                        <div className="vertical_line"></div>
+                        <Modal_GroupR />
+                    </div>
+                    :
+                    <div className="group_modalBody" onClick={(e) => e.stopPropagation()}>
+                        <Modal_GroupL diaryDetailInfo={diaryDetailInfo[0]} />
+                        <div className="vertical_line"></div>
+                        <Modal_GroupR diaryDetailInfo={diaryDetailInfo[1]} />
+                    </div>
+                }
             </div>
         </>
     );

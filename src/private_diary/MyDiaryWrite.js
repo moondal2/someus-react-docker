@@ -30,7 +30,6 @@ const MyDiaryWrite = ({ history }) => {
                 setMood(response.data.moodList);
                 setUsername(decode_token.name);
                 setUserId(decode_token.sub);
-                console.log(weather);
             })
             .catch((error) => {
                 console.log(error);
@@ -46,8 +45,8 @@ const MyDiaryWrite = ({ history }) => {
                 <>
                     <img className="privateweather_img"
                         src={weather[i].weatherId == weatherActive
-                        ? `/img/weatherC_${weather[i].weatherId}.png`
-                        : `/img/weather_${weather[i].weatherId}.png`}
+                            ? `/img/weatherC_${weather[i].weatherId}.png`
+                            : `/img/weather_${weather[i].weatherId}.png`}
                         onClick={toggleWeatherActive}
                         alt={weather[i].weatherId} />
                 </>
@@ -62,11 +61,11 @@ const MyDiaryWrite = ({ history }) => {
             result.push(
                 <>
                     <img className="privatemood_img"
-                       src={mood[i].moodId == moodActive
-                        ? `/img/moodC_${mood[i].moodId}.png`
-                        : `/img/mood_${mood[i].moodId}.png`}
-                    onClick={toggleMoodActive}
-                    alt={mood[i].moodId} />
+                        src={mood[i].moodId == moodActive
+                            ? `/img/moodC_${mood[i].moodId}.png`
+                            : `/img/mood_${mood[i].moodId}.png`}
+                        onClick={toggleMoodActive}
+                        alt={mood[i].moodId} />
                 </>
             );
         } return result;
@@ -90,6 +89,7 @@ const MyDiaryWrite = ({ history }) => {
 
     const formData = new FormData();
 
+    // 사진 업로드 핸들러
     const handleChangeFile = (e) => {
         const newImgBase = [1];
         // 1MB
@@ -114,9 +114,9 @@ const MyDiaryWrite = ({ history }) => {
                 } else if (e.target.files[i]) {
                     console.log(e.target.files[i].size);
                     let reader = new FileReader();
-                    // 1. 파일을 읽어 버퍼에 저장합니다.
+                    // 1. 파일을 읽어 버퍼에 저장
                     reader.readAsDataURL(e.target.files[i]);
-                    // 2. 읽기가 완료되면 아래코드가 실행됩니다.
+                    // 2. 읽기가 완료되면 아래코드 실행
                     reader.onloadend = () => {
                         const base64 = reader.result;
                         newImgBase.pop();
@@ -132,6 +132,7 @@ const MyDiaryWrite = ({ history }) => {
         };
     };
 
+    // 파일을 제외한 다른 데이터를 담는 객체
     const diaryDto = {
         weatherId: weatherActive,
         moodId: moodActive,
@@ -139,6 +140,8 @@ const MyDiaryWrite = ({ history }) => {
         memberId: userId
     };
 
+    // formData 형식으로 사진, 그 외 데이터 추가
+    // Blob - 멀티데이터의 처리를 위해 사용하는 함수
     formData.append(
         "data",
         new Blob([JSON.stringify(diaryDto)], { type: "application/json" })
@@ -168,7 +171,7 @@ const MyDiaryWrite = ({ history }) => {
             .catch(error => {
                 console.log(error);
             })
-    }
+    };
 
     return (
         <>
@@ -176,28 +179,28 @@ const MyDiaryWrite = ({ history }) => {
             <div className='mydiarywrite_background'>
                 <div className='container'>
                     <h1>오늘의 일기</h1>
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={ onSubmit }>
                         <div>
                             <div className='writeheader'>
                                 <div className='weather-container'>
                                     <p>오늘의 날씨</p>
-                                    {weatherList()}
+                                    { weatherList() }
                                 </div>
                                 <div className='mood-container'>
                                     <p>오늘의 기분은?</p>
-                                    {moodList()}
+                                    { moodList() }
                                 </div>
                             </div>
 
-                            
+
                             <textarea className="writebody_private"
                                 placeholder="오늘의 하루를 입력해 주세요."
-                                value={contents}
-                                onChange={handlerOnChangeContents}></textarea>
-                            
+                                value={ contents }
+                                onChange={ handlerOnChangeContents }></textarea>
+
 
                             <div className='writefooter'>
-                                <input className='fileBox_private' type='file' id='file' onChange={handleChangeFile} />
+                                <input className='fileBox_private' type='file' id='file' onChange={ handleChangeFile } />
                             </div>
                             <input className='submit_private' type='submit' value='제출' />
                         </div>

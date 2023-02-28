@@ -5,11 +5,10 @@ import jwt_decode from 'jwt-decode';
 
 const TodoList = (props) => {
 
-    //{ 변수 } 토큰과 멤버IDget
     const token = sessionStorage.getItem('token');
     const memberId = jwt_decode(token).sub;
 
-    //{ 변수 } 체크박스를 누를 때 마다 바뀔 이미지 3개, images[인덱스번호]를 통해 사용
+    // 체크박스를 누를 때 마다 바뀔 이미지 3개, images[인덱스번호]를 통해 사용
     const images = [
         '/img/todo_null.png',
         '/img/todo_ing.png',
@@ -38,7 +37,6 @@ const TodoList = (props) => {
             const index = updateArray.findIndex(item => item.goalId === id);
             updateArray[index] = { ...updateArray[index], goalContents: e };
 
-
             //인자 id를 가지고 해당 goalId를 갖고 하나의 객체를 가져와서 할당
             const arrayTodos = props.todos.find(array => {
                 if (array.goalId === id) return array
@@ -52,11 +50,13 @@ const TodoList = (props) => {
                 goalState: Number(arrayTodos.goalState),
                 goalDate: arrayTodos.goalDate
             };
+
             //서버에 보낼 Header로서 토큰과 컨텐츠타입(JSON) 지정
             const header = {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             };
+
             //서버에 put으로 수정 요청
             axios.put(`http://localhost:8080/api/someus/private/list/goal/${id}`, data,
                 {
@@ -74,30 +74,23 @@ const TodoList = (props) => {
         });
     };
 
-
     //{ 핸들러 } 삭제 이미지(지우개) 누르면 해당 목표 삭제 (작업완료)
     const handlerClickEraser = (id) => {
         //id값을 기준으로 서버에 delete 요청
         axios.delete(`http://localhost:8080/api/someus/private/list/goal/${id}`,
-            {
-                headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` },
-            }).then(response => {
+            { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` },  })
+            .then(response => {
                 if (response.data === 1) {
-
                     //서버에서 수정이 되면 1을 반환, 삭제된 id를 지우고(filter), Todos를 최신 상태로 반영
                     props.setTodos(prevState => {
                         const newArray = prevState.filter(item => item.goalId !== id);
                         return newArray;
-                    });
-                    console.log(response.data);
-
-                } else {
+                    })               } else {
                     alert('수정실패');
                     return;
                 }
             }).catch(error => console.log(error));
     };
-
 
     // { 핸들러 } 하트 그림 클릭 -> [빈하트, 반하트, 꽉찬 하트] 로 변경 (작업완료)
     const handlerImgClick = (id) => {
@@ -142,7 +135,7 @@ const TodoList = (props) => {
 
     //{ 핸들러 } '+' 버튼 누르면 멤버ID와 달력의 날짜를 기준으로 기본 목표 내용 추가
     const handelrAddTodo = () => {
-        
+
         //날짜형태를 MyDiaryList의 달력날짜에서 가져오고 'yyyy-mm-dd'로 바꿈
         const startDate = props.startDate;
         const startDateYear = startDate.getFullYear();
@@ -179,9 +172,7 @@ const TodoList = (props) => {
                 }
             }).catch(error => console.log(error));
     };
-
-
-    //{ TodoList 리턴 내용 } 
+ 
     return (
         <>
             <div className="todo_box">

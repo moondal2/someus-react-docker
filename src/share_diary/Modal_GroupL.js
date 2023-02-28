@@ -45,14 +45,14 @@ const Modal_GroupL = (props) => {
         <>
             <div className="groupL_modal">
                 <div className="groupL_modalImgbox">
-                    <img className="groupL_modalImg" src={props.diaryDetailInfo? `http://localhost:8080/api/getImage/` + props.diaryDetailInfo.diary_img : ''}/>
+                    <img className="groupL_modalImg" src={props.diaryDetailInfo ? `http://localhost:8080/api/getImage/` + props.diaryDetailInfo.diary_img : ''} />
                 </div>
                 <div className="groupL_write">
                     <div className="groupL_modalHeader">
                         <div className="groupL_date">{props.diaryDetailInfo ? props.diaryDetailInfo.createdDt : ""}</div>
                         <div className="groupL_modalHeaderRight">
                             <div className="groupL_weather">{props.diaryDetailInfo ? weatherImg(props.diaryDetailInfo.weather_id) : ''}</div>
-                            <div className="groupL_mood">{props.diaryDetailInfo ? moodImg(props.diaryDetailInfo.mood_id): ''}</div>
+                            <div className="groupL_mood">{props.diaryDetailInfo ? moodImg(props.diaryDetailInfo.mood_id) : ''}</div>
                         </div>
                     </div>
                     <div className="group_dairyContents">{props.diaryDetailInfo ? props.diaryDetailInfo.diaryContent : ""}</div>

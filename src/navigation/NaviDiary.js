@@ -7,19 +7,18 @@ import jwt_decode from "jwt-decode";
 
 const NaviDiary = (props) => {
 
-    const [ name, setName ] = useState('');
-    const [ memberId, setMemberId ] = useState('');
+    const [name, setName] = useState('');
+    const [memberId, setMemberId] = useState('');
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
-        
-        // if ( token != null ) {
-            const decode_token = jwt_decode(token)
-            setName(decode_token.name);
-            setMemberId(decode_token.sub)
-            
-            let memberId = decode_token.sub;
-        // }
+
+        const decode_token = jwt_decode(token)
+        setName(decode_token.name);
+        setMemberId(decode_token.sub)
+
+        let memberId = decode_token.sub;
+
     }, []);
 
     const handlerClickHome = () => {
@@ -35,28 +34,28 @@ const NaviDiary = (props) => {
         sessionStorage.clear();
         props.history.push('/someus/mainpage')
     };
-    
-   
+
+
     return (
-            <>
+        <>
             <div id='header'>
-            <div className= 'menu'>
-                <input type="image" 
-                        className= 'home'
+                <div className='menu'>
+                    <input type="image"
+                        className='home'
                         src={home}
-                        onClick={ handlerClickHome }></input>
-                <div className='loginMessage'>
-                    <p className="name">{ name }의 일기장 ◡̈⋆*</p>
-                    <button type="button"
-                            className='myPage' 
+                        onClick={handlerClickHome}></input>
+                    <div className='loginMessage'>
+                        <p className="name">{name}의 일기장 ◡̈⋆*</p>
+                        <button type="button"
+                            className='myPage'
                             value="마이페이지"
-                            onClick={ handlerClickMyPage }><img src={mypage} /></button>
-                    <button type="button"
-                            className= 'logout' 
+                            onClick={handlerClickMyPage}><img src={mypage} /></button>
+                        <button type="button"
+                            className='logout'
                             value="로그아웃"
-                            onClick={ handlerClickLogout }><img src={logout} /></button>
+                            onClick={handlerClickLogout}><img src={logout} /></button>
+                    </div>
                 </div>
-            </div>
             </div>
         </>
     );

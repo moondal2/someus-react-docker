@@ -4,13 +4,12 @@ import './addgroup.css';
 import jwt_decode from "jwt-decode";
 
 
-const AddGroupNext = (props, { history }) => {
+const AddGroupNext = (props) => {
 
     const [memberId, setMemberId] = useState('');
     const [shareRoomId, setShareRoomId] = useState(0);
     const [shareMemberId, setShareMemberId] = useState('');
-    const { modalState, setModalState } = props;
-
+   
     useEffect(() => {
 
         const token = sessionStorage.getItem('token');
@@ -19,13 +18,10 @@ const AddGroupNext = (props, { history }) => {
 
         let memberId = decode_token.sub;
 
-
         axios.get(`http://localhost:8080/api/someus/addgroup/${memberId}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
-                console.log(response);
                 setShareRoomId(response.data);
-                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -35,7 +31,6 @@ const AddGroupNext = (props, { history }) => {
     const onSubmit = (e) => {
         e.preventDefault();
         axios.post(`http://localhost:8080/api/someus/addgroupnext`,
-
             [{
                 "shareRoomId": shareRoomId,
                 "memberId": memberId
@@ -48,12 +43,8 @@ const AddGroupNext = (props, { history }) => {
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } }
         )
             .then((response) => {
-                console.log(response);
-                console.log(memberId);
-                console.log(shareMemberId);
                 alert(`정상적으로 등록되었습니다.`);
                 props.handlerSubmit();
-
             })
             .catch((error) => {
                 alert(`해당 아이디를 이용하는 사용자가 없습니다.`);

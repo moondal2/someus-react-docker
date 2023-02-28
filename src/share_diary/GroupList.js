@@ -8,13 +8,10 @@ import GroupShareEach from "./GroupShareEach";
 import AddGroupNext from "./AddGroupNext";
 
 
-const GroupList = ({ name, history, match }) => {
+const GroupList = ({ history, match }) => {
 
-    const { shareroomid } = match.params;
-    // 모달
     const [ modalState, setModalState ] = useState(false);
     const [ modalStateN, setModalStateN ] = useState(0);
-    
     const [ groupList, setGroupList ] = useState([]);
     const [ memberId, setMemberId ] = useState('');
 
@@ -22,19 +19,15 @@ const GroupList = ({ name, history, match }) => {
         setModalState(false);
     };
 
-    // 일기
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         const decode_token = jwt_decode(token);
         setMemberId(decode_token.sub);
-        console.log(modalStateN);
-        console.log(modalState);
         let memberId = decode_token.sub;
         axios.get(`http://localhost:8080/api/someus/share/grouplist/${memberId}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
                 setGroupList(response.data);
-                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -60,12 +53,7 @@ const GroupList = ({ name, history, match }) => {
     const handlerSubmit = () => {
         setModalState(false);
         window.location.reload();
-    }
-
-    const onClickPlus = () => {
-        setModalState(true); 
-
-    }
+    };
 
     return (
         <>
@@ -81,8 +69,8 @@ const GroupList = ({ name, history, match }) => {
                                     modalState={ modalState }
                                     setModalState={ setModalState }
                                     modalStateN={ modalStateN }
-                                    handlerClickNext={handlerClickNext}
-                                    closeModal={closeModal} 
+                                    handlerClickNext={ handlerClickNext }
+                                    closeModal={ closeModal } 
                                         />
                         }
 
@@ -92,7 +80,7 @@ const GroupList = ({ name, history, match }) => {
                                         modalState={ modalState }
                                         setModalState={ setModalState }
                                         handlerSubmit={ handlerSubmit }
-                                        closeModal={closeModal}
+                                        closeModal={ closeModal }
                                         
                                     />
                         }
@@ -102,6 +90,5 @@ const GroupList = ({ name, history, match }) => {
         </>
     );
 }
-
 
 export default GroupList;

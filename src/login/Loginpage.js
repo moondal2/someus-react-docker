@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 import './Login.css';
 
 const Loginpage = ({ history }) => {
-    //id, pw state 설정
+
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
-    //id 바뀌면 state에 저장
+
 
     const handlerIdInput = (e) => {
         setId(e.target.value);
     };
-    //pw 바뀌면 state에 저장
+
     const handlerPwInput = (e) => {
         setPw(e.target.value);
     };
@@ -65,7 +65,7 @@ const Loginpage = ({ history }) => {
                     <div className="loginLogo"></div>
                     <div className="loginInput" >
                         <form className="loginForm" onSubmit={handlerSubmit}>
-                            {/* id, pw가 값이 있다면 label의 클래스명이 바껴서 다른 css가 적용되도록. */}
+                            {/* id, pw가 값이 있다면 label의 클래스명이 바뀌어서 다른 css가 적용되도록. */}
                             <div className={id === '' ? "loginInputBox1" : "loginInputBox2"}>
                                 <label>
                                     <span>
@@ -75,7 +75,7 @@ const Loginpage = ({ history }) => {
                                     <div className="login_logo"></div>
                                 </span>
                                 <input id="loginId"
-                                value={id}
+                                    value={id}
                                     onChange={handlerIdInput}
                                     placeholder="아이디">
 

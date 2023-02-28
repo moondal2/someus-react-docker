@@ -3,9 +3,6 @@ import './myPage.css';
 // import jwt_decode from "jwt-decode";
 
 const MyPage = ({ history }) => {
-    const token = sessionStorage.getItem("token");
-    // const decode_token = jwt_decode(token);
-    // const name = decode_token.name;
 
     const handlerPrivate = () => {
         history.push('/someus/private');
@@ -17,7 +14,7 @@ const MyPage = ({ history }) => {
 
     return (
         <>
-        <NaviDiary history={history}/>
+            <NaviDiary history={history} />
             <div className="mypageBackground">
                 <div className="mypage">
                     <button className="myD"
