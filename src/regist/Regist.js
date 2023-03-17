@@ -125,7 +125,7 @@ const Regist = ({ history }) => {
         console.log('버튼 누름');
         e.preventDefault();
         
-        axios.post(`http://localhost:8080/api/regist`,
+        axios.post(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/regist`,
         { "memberId": form.id,
           "memberPw": form.password,
           "memberName": form.name,

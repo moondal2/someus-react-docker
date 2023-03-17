@@ -7,7 +7,7 @@ const Modal_Mydiary = (props) => {
     const [weather, setWeather] = useState('');
     const [mood, setMood] = useState('');
     const [contents, setContents] = useState('');
-    const image = `http://localhost:8080/api/getImage/` + props.list.diaryImg;
+    const image = `http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/getImage/` + props.list.diaryImg;
 
     const diaryId = props.list.diaryId;
 
@@ -56,7 +56,7 @@ const Modal_Mydiary = (props) => {
 
     // 내용 수정 이벤트 핸들러
     const handlerOnClickUpdate = () => {
-        axios.put(`http://localhost:8080/api/someus/private/${diaryId}`,
+        axios.put(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/someus/private/${diaryId}`,
             { "diaryContent": contents },
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
@@ -78,7 +78,7 @@ const Modal_Mydiary = (props) => {
 
     // 일기 삭제 이벤트 핸들러
     const handlerOnClickDelete = () => {
-        axios.delete(`http://localhost:8080/api/someus/private/${diaryId}`,
+        axios.delete(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/someus/private/${diaryId}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => {
                 if (response.data === 1) {

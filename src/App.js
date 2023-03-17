@@ -16,6 +16,7 @@ function App() {
 
   return (
     <>
+      <Route path='/' component={ (props) => <Main {...props} /> } exact={true} />
       <Route path='/login' component={Loginpage} exact={true} />
       <Route path="/someus/regist" component={Regist} exact={true} />
       <Route path='/someus/mypage' component={ (props) => <MyPage {...props} /> } exact={true} />

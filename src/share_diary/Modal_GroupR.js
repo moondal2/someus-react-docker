@@ -46,7 +46,7 @@ const Modal_GroupR = (props) => {
         <>
             <div className="groupR_modal">
                 <div className="groupR_modalImgbox">
-                    <img className="groupR_modalImg" src={props.diaryDetailInfo ? `http://localhost:8080/api/getImage/` + props.diaryDetailInfo.diary_img : ''} />
+                    <img className="groupR_modalImg" src={props.diaryDetailInfo ? `http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/getImage/` + props.diaryDetailInfo.diary_img : ''} />
                 </div>
                 <div className="groupL_write">
                     <div className="groupR_modalHeader">

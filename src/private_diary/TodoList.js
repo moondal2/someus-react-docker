@@ -58,7 +58,7 @@ const TodoList = (props) => {
             };
 
             //서버에 put으로 수정 요청
-            axios.put(`http://localhost:8080/api/someus/private/list/goal/${id}`, data,
+            axios.put(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/someus/private/list/goal/${id}`, data,
                 {
                     headers: header
                 }).then(response => {
@@ -77,7 +77,7 @@ const TodoList = (props) => {
     //{ 핸들러 } 삭제 이미지(지우개) 누르면 해당 목표 삭제 (작업완료)
     const handlerClickEraser = (id) => {
         //id값을 기준으로 서버에 delete 요청
-        axios.delete(`http://localhost:8080/api/someus/private/list/goal/${id}`,
+        axios.delete(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/someus/private/list/goal/${id}`,
             { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` },  })
             .then(response => {
                 if (response.data === 1) {
@@ -117,7 +117,7 @@ const TodoList = (props) => {
                 'Content-Type': 'application/json'
             };
             //서버에 put으로 수정 요청
-            axios.put(`http://localhost:8080/api/someus/private/list/goal/${id}`, data,
+            axios.put(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/someus/private/list/goal/${id}`, data,
                 {
                     headers: header
                 }).then(response => {
@@ -157,7 +157,7 @@ const TodoList = (props) => {
         };
 
         //서버에 post로 입력 요청
-        axios.post(`http://localhost:8080/api/someus/private/list/goal`, data,
+        axios.post(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/someus/private/list/goal`, data,
             {
                 headers: header
             }).then(response => {

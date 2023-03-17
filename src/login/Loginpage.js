@@ -23,21 +23,23 @@ const Loginpage = ({ history }) => {
 
     const handlerSubmit = (e) => {
         e.preventDefault();
-        axios.post(`http://localhost:8080/login`,
+        console.log(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/login`);
+        axios.post(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/login`,
             { "memberId": id, "memberPw": pw })
             .then((response) => {
+                console.log(response);
                 if (response.data) {
                     sessionStorage.setItem("token", response.data);
                     alert('로그인에 성공했습니다.');
                     history.push('/someus/mainpage');
                 } else {
                     sessionStorage.clear();
-                    alert('일치하는 정보가 없습니다.');
+                    alert('일치하는 정보가 없습니다.1');
                 }
             })
             .catch(error => {
                 sessionStorage.clear();
-                alert('일치하는 정보가 없습니다.');
+                alert('일치하는 정보가 없습니다.2');
                 setId('');
                 setPw('');
             })

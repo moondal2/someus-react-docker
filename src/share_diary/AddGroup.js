@@ -30,7 +30,7 @@ const AddGroup = (props) => {
         const token = sessionStorage.getItem('token');
         const decode_token = jwt_decode(token);
 
-        axios.post(`http://localhost:8080/api/someus/addgroup`,
+        axios.post(`http://${process.env.REACT_APP_REST_API_SERVER_IP}:${process.env.REACT_APP_REST_API_SERVER_PORT}/api/someus/addgroup`,
             { "shareRoomName": shareRoomName,
               "memberId": decode_token.sub },
               { headers: { 'Authorization' : `Bearer ${ sessionStorage.getItem('token') }`}}
